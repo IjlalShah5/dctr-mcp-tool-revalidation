@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "DCTR: Directional Contract-Transition Revalidation for Model Context Protocol Tools"
+message: "If you use this reproducibility package, please cite the associated manuscript and this repository."
+type: dataset
+authors:
+  - family-names: Haider
+    given-names: Syed Ijlal
+  - family-names: Nouman
+    given-names: Muhammad
+  - family-names: Ujjan
+    given-names: Raja
+repository-code: "https://github.com/IjlalShah5/dctr-mcp-tool-revalidation"
+url: "https://github.com/IjlalShah5/dctr-mcp-tool-revalidation"
+abstract: "Reproducibility artifacts for Directional Contract-Transition Revalidation (DCTR), including source provenance, reconstructed MCP Tool contract transitions, canonical hashing, exact directional deltas, and auditable trust-renewal coding records."
+keywords:
+  - Model Context Protocol
+  - MCP security
+  - trust revalidation
+  - contract evolution
+  - agentic AI
+  - schema evolution
+license: CC-BY-4.0
