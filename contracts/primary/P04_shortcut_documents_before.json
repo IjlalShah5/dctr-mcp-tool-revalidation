@@ -1,0 +1,19 @@
+{
+  "name": "documents-create",
+  "description": "Create a new document in Shortcut with a title and content. Returns the document's id, title, and app_url. Note: Use HTML markup for the content (e.g., <p>, <h1>, <ul>, <strong>) rather than Markdown.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "maxLength": 256,
+        "description": "The title for the new document (max 256 characters)"
+      },
+      "content": {
+        "type": "string",
+        "description": "The content for the new document in HTML format (e.g., <p>Hello</p>, <h1>Title</h1>, <ul><li>Item</li></ul>)"
+      }
+    },
+    "required": ["title", "content"]
+  }
+}
