@@ -1,0 +1,5 @@
+server_family,repository,default_branch,reconstruction_status,notes
+CXWorld/CapFrameX,CXWorld/CapFrameX,master,in_progress,Public maintainer repository verified; immutable transition boundaries are being reconstructed.
+Shortcut,useshortcut/mcp-server-shortcut,main,in_progress,Public maintainer repository verified; repository is archived but commit history remains accessible.
+Terraform MCP,hashicorp/terraform-mcp-server,main,in_progress,Public maintainer repository verified; immutable transition boundaries are being reconstructed.
+Playwright MCP,microsoft/playwright-mcp,main,in_progress,Public maintainer repository verified; release and commit history is being reconstructed.
