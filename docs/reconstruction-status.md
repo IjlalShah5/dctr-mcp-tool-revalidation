@@ -68,23 +68,44 @@ Each row is tied to a direct maintainer commit that adds and registers the Tool.
 
 This is an important reproducibility finding: source evidence verifies the 12 candidate transitions themselves, but not yet the rule that makes exactly those 12—and no later additions—the empirical Terraform corpus.
 
+### Playwright MCP — 7 source-verified introduction candidates, corpus boundary not yet reproducible
+
+Seven absent→present Tool introductions that match the manuscript-implied Playwright composition have now been reconstructed from the authoritative upstream `microsoft/playwright` Tool source and recorded in `data/playwright_introductions.csv`:
+
+- `browser_show_tracing`
+- `browser_network_state_set`
+- `browser_drop`
+- `browser_annotate`
+- `browser_video_show_actions`
+- `browser_video_hide_actions`
+- `browser_find`
+
+The corresponding immutable source commits are `8d4588c85ce362f9bf43108e5cd0ee5eb7e3f9a9`, `6fd3cb4c45cbc4fc4ef2fde36624f91bfc3abd81`, `f9f8fff0e09276062e3ace017b4c01d145de63e8`, `b19250e9c6456939b551b222d14bb8e343de2949`, `20e51e78570f3a09e16888b20eb5aea10e725d36` (two Tool introductions), and `9725152dac40ed511098664fcd253b545f67e7f0`.
+
+Each commit directly adds a Tool schema to the MCP Tool registry, so the individual introduction events are source-verified. They remain marked `provisional-boundary-match` because the upstream repository contains other MCP Tool introductions outside this seven-event set. The downstream `microsoft/playwright-mcp` repository is primarily a packaging/synchronization layer for upstream Tool definitions and therefore cannot by itself explain why these seven introductions—and no other upstream Tool additions—constitute the manuscript's reported Playwright introduction subset.
+
+The three Playwright in-place mutations are separately source-verified, so the reported family arithmetic of **7 introductions + 3 mutations = 10 transitions** can now be reproduced at the event-identity level. What remains unresolved is the exact observation/release-selection rule that makes this ten-event set the intended empirical Playwright corpus.
+
 ## Verified transition coverage
 
-At the Tool-event level, source evidence now exists for:
+At the **Tool-event identity and immutable-boundary level**, source evidence now exists for all **82 events implied by the manuscript's family arithmetic**:
 
 - 42 CapFrameX introductions;
 - 17 Shortcut introductions;
-- 4 primary in-place mutations;
-- 12 Terraform introduction candidates.
+- 12 Terraform introduction candidates;
+- 7 Playwright introduction candidates;
+- 4 primary in-place mutations.
 
-That is **75 source-verified Tool events** associated with the reported corpus, of which **63** (42 CapFrameX + 17 Shortcut + 4 mutations) align with the manuscript-implied family composition without changing any Tool identity or event count. The remaining **12 Terraform events** are individually verified but await a reproducible family-selection cutoff before promotion to final corpus membership.
+This reproduces the reported arithmetic **78 introductions + 4 mutations = 82 Tool events** without inventing event identities or commit boundaries.
 
-Remaining reconstruction work:
+However, this does **not** yet establish that the manuscript's exact 82-row selected corpus is independently reproducible. The distinction is important:
 
-- Terraform MCP: resolve the selection rule for the 12 reconstructed candidates;
-- Shortcut: document the family observation/selection rule that yields exactly the reconstructed 17 introductions plus the `documents-create` mutation;
-- Playwright MCP: reconstruct the 7 introductions selected by the original corpus boundary;
-- reconcile all reconstructed source clusters against the manuscript's reported 20 release clusters.
+- **CapFrameX**: family count and source boundaries are independently reproduced.
+- **Shortcut**: all 17 introductions and the mutation are source-verified, but the family observation/selection rule is not yet explicit enough to explain exclusion of later Tool additions.
+- **Terraform**: all 12 candidate introductions are source-verified, but the selection cutoff is unresolved.
+- **Playwright**: all seven candidate introductions and three mutations are source-verified, but the selection cutoff is unresolved.
+
+Therefore the current artifact supports the statement that **82 source-backed Tool events matching the manuscript's reported composition have been reconstructed**, while the stronger statement **“the exact 82-row corpus has been independently reproduced under a fully specified sampling rule”** remains pending.
 
 ## Important serializer caveat
 
@@ -94,7 +115,8 @@ This caveat means the manuscript wording that currently states exact screenshot 
 
 ## Next reconstruction work
 
-1. Reconstruct the 7 Playwright Tool introductions selected by the original corpus boundary.
-2. Identify/document the observation or release-selection rules for Terraform and Shortcut; if they cannot be reproduced, flag the affected manuscript family totals for correction rather than forcing a match.
-3. Reconcile the reconstructed cluster count against the manuscript's reported 20 release clusters.
-4. Generate a machine-checkable final audit (`verification_report.md`) and update the manuscript Data Availability Statement.
+1. Reconstruct the corpus-selection rule by identifying the observation/release cutoffs used for Shortcut, Terraform, and Playwright. If no defensible common or family-specific rule can be recovered, flag the affected manuscript family totals as a provenance limitation rather than forcing a retrospective rule.
+2. Reconcile the reconstructed source/release boundaries against the manuscript's reported **20 release clusters**.
+3. Build a unified machine-readable manifest that assigns each reconstructed event a source boundary, family, transition type, cluster identifier, and membership status.
+4. Generate a machine-checkable `verification_report.md` summarizing event counts, unresolved boundaries, and any manuscript corrections required.
+5. Update the manuscript corpus-provenance table and Data Availability Statement from the final public artifact.
