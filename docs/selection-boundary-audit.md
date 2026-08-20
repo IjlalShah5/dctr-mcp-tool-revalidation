@@ -2,53 +2,51 @@
 
 ## Purpose
 
-The manuscript reports 82 Tool-level transitions across 20 release clusters. Public-source reconstruction now identifies 82 Tool events whose family composition matches the reported arithmetic (78 introductions and four in-place mutations). This audit separates two claims that must not be conflated:
+The manuscript's retained empirical corpus contains 82 Tool-level events grouped into **20 maintainer change clusters**. Public-source reconstruction now identifies all 82 events (78 introductions and four in-place mutations) and maps them to the 20 retained clusters in `data/cluster_manifest.csv`.
 
-1. **Event verification:** an individual Tool event can be tied to an immutable maintainer-authored before/after boundary.
-2. **Corpus-selection reproducibility:** an independent researcher can apply a stated observation/release rule and recover exactly the same event set and release-cluster grouping.
+This audit separates three claims that must not be conflated:
 
-The first claim is now substantially supported for the reported 82-event composition. The second remains partially unresolved for Shortcut, Terraform, and Playwright because the manuscript does not currently state family-specific observation cutoffs with enough precision to explain why later qualifying Tool additions are excluded.
+1. **Event verification:** an individual Tool event can be tied to immutable maintainer-authored evidence.
+2. **Cluster reconstruction:** the 82 retained events can be assigned to the 20 maintainer change clusters used by the revised manuscript.
+3. **Historical selection-rule reproducibility:** an independent researcher can recover the same retained event set solely by replaying the original observation/release cutoff that was used during acquisition.
+
+The first two claims are now supported by the public artifact. The third remains partially unresolved for Shortcut, Terraform, and Playwright because the original historical observation cutoff was not retained with enough precision to explain every exclusion of later qualifying Tool additions.
 
 ## Family-level status
 
-| Family | Reported events | Reconstructed source-backed events | Selection-boundary status |
+| Family | Retained events | Retained change clusters | Reconstruction status |
 |---|---:|---:|---|
-| CXWorld/CapFrameX | 42 | 42 | Reproduced at family level |
-| Shortcut | 18 | 17 introductions + 1 mutation | Event identities reproduced; observation cutoff unresolved |
-| Terraform MCP | 12 | 12 introductions | Event identities reproduced; observation cutoff unresolved |
-| Playwright MCP | 10 | 7 introductions + 3 mutations | Event identities reproduced; observation cutoff unresolved |
-| **Total** | **82** | **82** | Event arithmetic reproduced; exact sampling rule not yet fully reproduced |
+| CXWorld/CapFrameX | 42 | 4 | Event identities and family grouping reproduced |
+| Shortcut | 18 | 2 | Event identities and retained grouping reproduced; historical cutoff unresolved |
+| Terraform MCP | 12 | 6 | Event identities and retained grouping reproduced; historical cutoff unresolved |
+| Playwright MCP | 10 | 8 | Event identities and retained grouping reproduced; historical cutoff unresolved |
+| **Total** | **82** | **20** | Authoritative retained manifest reconstructed |
 
-## Why a cutoff is necessary
+The machine-readable cluster record is `data/cluster_manifest.csv`. It is the authoritative manifest for the revised manuscript and should be used when reproducing the reported family and cluster arithmetic.
 
-All three unresolved histories contain additional Tool additions outside the reconstructed manuscript-matching subset. A retrospective rule such as “take the first N additions” would be scientifically unacceptable unless that rule can be shown to have been part of the original acquisition design. Likewise, choosing a date solely because it yields the desired family count would constitute post-hoc count fitting.
+## Why the historical cutoff still matters
 
-A defensible rule must be independently motivated by evidence such as:
+Shortcut, Terraform, and Playwright contain additional Tool additions outside the retained set. A retrospective rule such as “take the first N additions” would be scientifically unacceptable unless that rule can be shown to have been part of the original acquisition design. Likewise, choosing a date solely because it yields the reported family count would constitute post-hoc count fitting.
 
-- a documented literature/data collection cutoff;
-- a frozen release/tag boundary;
-- an archived acquisition manifest;
-- a common observation date applied consistently across repositories;
-- or another rule stated before the family counts are considered.
+A historically reproducible selection rule would require independently motivated evidence such as a documented collection cutoff, frozen release/tag boundary, archived acquisition manifest, common observation date, or another rule fixed before the family counts were considered. That original selection metadata has not yet been recovered for all three histories.
 
 ## Current implication for the manuscript
 
-Until the selection rule is recovered, the public artifact supports the following narrower statement:
+The public artifact supports the following statement:
 
-> We reconstructed 82 immutable, source-backed Tool events whose family composition matches the retained study corpus: 78 introductions and four in-place mutations. Family-level event identities are auditable; however, the original observation cutoff for three histories could not yet be recovered with sufficient precision to claim independent reproduction of the corpus-selection rule.
+> We reconstructed 82 immutable, source-backed Tool events matching the retained study corpus and reconciled them into 20 maintainer change clusters documented in the authoritative public manifest. The event identities and retained cluster grouping are auditable; however, the original historical observation cutoff for three project histories could not be recovered with sufficient precision to claim that the same 82-event selection can be regenerated solely from the original unstated acquisition rule.
 
-The artifact does **not** yet support the stronger wording:
+The artifact does **not** support the stronger statement:
 
-> An independent researcher can regenerate the exact 82-row corpus solely from the published acquisition procedure.
+> An independent researcher can regenerate the exact 82-event selection solely by replaying a fully specified original observation cutoff.
 
-## Required next checks
+## Remaining checks
 
-1. Map every reconstructed event to downstream release/tag exposure where applicable.
-2. Search retained manuscript/project artifacts for an explicit observation date, release whitelist, or acquisition manifest.
-3. Test whether one non-post-hoc cutoff recovers the reported Shortcut, Terraform, and Playwright sets simultaneously.
-4. Reconcile the resulting boundaries with the manuscript's reported 20 release clusters.
-5. If no defensible rule is recoverable, revise the paper to state this as a provenance limitation and publish the reconstructed immutable event manifest as the authoritative dataset.
+1. Continue searching retained project artifacts for an explicit historical observation date, release whitelist, or acquisition manifest.
+2. Preserve `data/cluster_manifest.csv` as the authoritative retained corpus grouping unless stronger original acquisition metadata is recovered.
+3. Keep the historical-cutoff limitation explicit in the manuscript and Data Availability materials.
+4. Do not silently add later qualifying events to the retained corpus without defining a new prospective sampling protocol and reporting it as a separate dataset.
 
 ## Integrity rule
 
-Counts will not be forced to match the manuscript by inventing a cutoff, silently excluding later events, or fabricating historical metadata. Where retained study metadata and public history disagree, the manuscript will be corrected or the limitation will be stated explicitly.
+Counts are not forced by inventing a cutoff, silently excluding inconvenient history, or fabricating metadata. Event verification and retained-cluster reconstruction are reported separately from historical selection-rule reproducibility.
