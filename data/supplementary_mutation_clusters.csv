@@ -1,0 +1,11 @@
+cluster_id,server_family,repository,date,after_boundary,event_count,surface_theme
+SCFX01,CXWorld/CapFrameX,CXWorld/CapFrameX,2026-05-21,d7059daa32ff2435af08b6f3224a42fe77b9a89f,1,description/capability guidance
+SCFX02,CXWorld/CapFrameX,CXWorld/CapFrameX,2026-08-06,15430ea5da3495f71197e40d2d6a11389ded092c,4,description/authoring guidance
+SCFX03,CXWorld/CapFrameX,CXWorld/CapFrameX,2026-08-08,c3009d86d334100025c0f0659d71a31a617c5129,1,input parameter addition
+SCFX04,CXWorld/CapFrameX,CXWorld/CapFrameX,2026-08-18,15b8c7d0b162df35c6a44d28e470ccc8f017c580,1,input parameter addition
+SCFX05,CXWorld/CapFrameX,CXWorld/CapFrameX,2026-08-29,aa7114d8257e5a8c2b48165cb7d9ba3cf33fda20,1,constraint/description expansion
+STFM01,Terraform MCP,hashicorp/terraform-mcp-server,2025-08-20,ae341b1e07334b0b3412bf62ad03448ed270e7ac,10,annotation/trust-hint additions
+STFM02,Terraform MCP,hashicorp/terraform-mcp-server,2025-09-23,ff39cb85341698e904e876be635a15706c0ead7e,1,destructive hint + enum narrowing
+STFM03,Terraform MCP,hashicorp/terraform-mcp-server,2026-09-10,3a7eaba3ba3e6bbfa9c2f31ee3b5c7b29656dff0,1,description expansion
+SPLW01,Playwright MCP,microsoft/playwright,2026-09-03,7894f5653e7f253c17aa1638c19f63e0d54d5e0e,11,path/filename semantic descriptions
+SPLW02,Playwright MCP,microsoft/playwright,2026-09-17,8bb2c0972ace1017f0691c7e1fd5d2a049a2a043,1,input parameter addition
