@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic JSON canonicalization and SHA-256 hashing for DCTR."""
+"""RFC 8785/JCS canonicalization and SHA-256 hashing for DCTR."""
 
 from __future__ import annotations
 
@@ -8,20 +8,19 @@ import json
 from pathlib import Path
 from typing import Any
 
+import rfc8785
+
 
 def canonical_bytes(obj: Any) -> bytes:
-    """Return deterministic UTF-8 JSON bytes.
+    """Return RFC 8785/JCS canonical UTF-8 bytes.
 
-    Object keys are recursively sorted by ``json.dumps`` while array order is
-    preserved. Compact separators remove insignificant whitespace.
+    Consequences relevant to DCTR:
+    * Boolean values remain distinct from JSON numbers.
+    * 1 and 1.0 canonicalize to the same JSON number representation.
+    * -0.0 and 0 canonicalize to the same JSON number representation.
+    * object properties follow the deterministic RFC 8785 ordering.
     """
-    return json.dumps(
-        obj,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-        allow_nan=False,
-    ).encode("utf-8")
+    return rfc8785.dumps(obj)
 
 
 def sha256_digest(obj: Any) -> str:
@@ -31,17 +30,3 @@ def sha256_digest(obj: Any) -> str:
 def load_json(path: str | Path) -> Any:
     with open(path, "r", encoding="utf-8") as fh:
         return json.load(fh)
-
-
-def main() -> None:
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("json_file")
-    args = parser.parse_args()
-    obj = load_json(args.json_file)
-    print(sha256_digest(obj))
-
-
-if __name__ == "__main__":
-    main()
