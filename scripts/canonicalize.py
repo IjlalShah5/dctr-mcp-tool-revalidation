@@ -5,10 +5,18 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
-import rfc8785
+try:
+    import rfc8785
+except ModuleNotFoundError:
+    # Offline-review fallback: use the vendored Apache-2.0 copy.
+    ROOT = Path(__file__).resolve().parents[1]
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from third_party import rfc8785
 
 
 def canonical_bytes(obj: Any) -> bytes:
