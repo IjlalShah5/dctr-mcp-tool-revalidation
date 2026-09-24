@@ -1,0 +1,17 @@
+{
+  "natural_mutations": 36,
+  "etdi_style": {
+    "EXPLICIT_REAPPROVAL": 36
+  },
+  "microsoft_specific": {
+    "INFO": 7,
+    "CRITICAL": 2,
+    "WARNING": 3,
+    "NOT_COVERED": 24
+  },
+  "microsoft_rug_pull": {
+    "CRITICAL": 26,
+    "NOT_COVERED": 10
+  },
+  "note": "DCTR held-out outputs for the 32 supplementary mutations remain pending independent annotation."
+}
