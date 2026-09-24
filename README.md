@@ -1,73 +1,126 @@
 # DCTR: Directional Contract-Transition Revalidation
 
-This repository contains the reproducibility package for the manuscript **“Directional Contract-Transition Revalidation for Model Context Protocol Tools: A Risk-Aware Framework for Evolving Agent Capabilities.”**
+This repository is the reproducibility artefact for the revised DCTR manuscript on
+approval continuity for evolving Model Context Protocol (MCP) Tools.
 
-## Purpose
+## Current revision branch
 
-DCTR studies whether a previously granted approval should remain transferable after an authenticated, client-visible MCP Tool contract changes. The repository is intended to retain the evidence required to reproduce the structural comparison and audit the resulting trust-renewal decision.
+The active major-revision work is on:
 
-## Evidence model
+`revision-phase11-hardening`
 
-For each verified Tool transition, the artifact is designed to retain:
+Draft PR: #1.
 
-- source repository and immutable before/after boundary;
-- Tool identity before and after the transition;
-- reconstructed client-visible contract before and after the transition;
-- canonical SHA-256 digest for each present contract;
-- exact recursive path-level delta with `ADD`, `REMOVE`, and `REPLACE` operations;
-- before and after values for every changed path;
-- DCTR Transition Security Vector (TSV) labels and rationale where semantic coding is applied;
-- transition-level L0–L4 result and reference action;
-- analysis-code version.
+The default `main` branch is intentionally left untouched until the revision artefact is
+fully audited.
 
-## Repository status
+## What DCTR evaluates
 
-The repository is being reconstructed from public maintainer histories. **No transition row, commit SHA, contract snapshot, or semantic label is inserted unless it can be traced to public source evidence.** The manuscript reports 82 verified Tool-level transitions across 20 release clusters and four server families; the public artifact will be treated as the authoritative audit of those numbers. If reconstruction reveals a discrepancy, the manuscript will be corrected rather than forcing the repository to match a pre-existing count.
+DCTR asks whether a prior approval remains transferable when an authenticated,
+client-visible Tool contract changes. The reference artefact separates:
 
-## Source families
+1. **deterministic change evidence** — RFC 8785/JCS canonical identity, SHA-256,
+   direction-preserving recursive deltas, and fail-closed consistency checks;
+2. **security-semantic interpretation** — explicit TSV/reference-policy coding;
+3. **trust-renewal state** — an operational grant-bound baseline plus a last
+   human-reviewed anchor used to detect cumulative staircase drift.
 
-The reconstruction targets these public maintainer repositories:
+Runtime authorization, provenance, sandboxing, and hidden implementation behavior remain
+separate controls.
 
-1. `CXWorld/CapFrameX`
-2. `useshortcut/mcp-server-shortcut`
-3. `hashicorp/terraform-mcp-server`
-4. `microsoft/playwright-mcp`
+## Evidence sets
 
-## Directory layout
+The artefact keeps two empirical sets separate:
+
+- **Original historical corpus:** 82 Tool-level transitions across 20 maintainer/release
+  clusters and four server families. This remains the descriptive denominator.
+- **Supplementary natural-mutation validation set:** 32 additional present-to-present
+  mutations across 10 maintainer clusters.
+
+Combined mutation-focused analysis therefore contains **36 natural mutations across
+14 mutation clusters**, but the two datasets are not pooled into a prevalence denominator.
+
+## Independent annotation design
+
+The four primary mutations P01–P04 were visible during codebook development and are now
+treated as a development set.
+
+The held-out independent evaluation population is the supplementary set:
+- 32 mutations;
+- 34 path-level units;
+- 10 maintainer clusters.
+
+The frozen paper-facing codebook is `docs/DCTR-CB-1.0-FROZEN.md`. Real independent
+annotator results are not present yet and must not be fabricated.
+
+## External comparison
+
+`data/baseline_comparison_36.csv` extends the decision-structure comparison to all
+36 natural mutations using:
+- an ETDI-style reapproval-on-any-change decision baseline;
+- Microsoft MCP Security Gateway's documented specific schema-drift and rug-pull rules;
+- DCTR, with supplementary outputs intentionally pending held-out independent annotation.
+
+Unsupported Microsoft surfaces are recorded as `NOT_COVERED`; no severity is invented.
+
+## Runtime triangulation
+
+A three-case controlled subset is retained for:
+- Playwright screenshot scale;
+- Playwright WebP/type-selection behavior;
+- Terraform `create_run` safe/destructive contract selection.
+
+These checks corroborate selected behavior only; they do not make DCTR a runtime detector.
+
+## Key layout
 
 ```text
-.
-├── README.md
-├── CITATION.cff
-├── requirements.txt
-├── data/
-│   ├── repository_boundaries.csv
-│   ├── transitions.csv
-│   └── primary_mutations.csv
-├── docs/
-│   ├── methodology.md
-│   ├── threat-model.md
-│   └── coding-rules.md
-└── scripts/
-    ├── canonicalize.py
-    ├── recursive_diff.py
-    └── verify_transition.py
+contracts/primary/                  corrected primary before/after projections
+data/
+  transitions.csv                  original historical transition inventory
+  primary_mutations.csv            original primary mutation manifest
+  supplementary_natural_mutations.csv
+  supplementary_mutation_clusters.csv
+  baseline_comparison_36.csv
+  runtime_alignment_matrix.csv
+  heldout_annotation_unit_index.csv
+  policy_conformance_suite.json
+docs/
+  methodology.md
+  coding-rules.md
+  DCTR-CB-1.0-FROZEN.md
+  annotation-protocol-heldout.md
+  supplementary-search-protocol.md
+  baseline-comparison-36.md
+  runtime-validation-report.md
+  formal-properties-phase11.md
+scripts/
+  canonicalize.py
+  recursive_diff.py
+  verify_transition.py
+  revalidation_state.py
+  p03_filename_inference.js
+  playwright_runtime_validation.py
+  tfmx11_contract_selector.go
+tests/
+  test_phase11_hardening.py
+  test_revision_artifacts.py
 ```
 
-## Reproducibility principle
+## Reproducibility discipline
 
-The package separates three layers that should not be conflated:
+No transition row, contract projection, source boundary, or semantic label should be
+promoted into the artefact unless it can be traced to retained evidence. Coordinated
+multi-Tool edits are reported at both event and cluster level to avoid pseudo-replication.
 
-1. **Change evidence** — canonical equality and exact recursive deltas.
-2. **Security interpretation** — direction-aware semantic coding of changed paths.
-3. **Trust-renewal action** — L0–L4 policy composition and the resulting client action.
+## Citation and release
 
-Hashing proves only whether the canonical contract changed. Provenance establishes origin continuity. Runtime policy controls concrete execution. DCTR addresses the intermediate trust-continuity question: whether the approval bound to the earlier contract should transfer to the revised contract.
-
-## Citation
-
-A formal citation entry is provided in `CITATION.cff`. Update the manuscript DOI and archival dataset DOI after publication/deposit.
+A formal citation entry is provided in `CITATION.cff`. Before resubmission, merge the
+audited revision PR, create an immutable revision tag/release, and cite that exact commit
+SHA in the response letter.
 
 ## License
 
-A repository license has not yet been selected by the authors. Until a license is added, the repository remains publicly readable but no additional reuse rights are granted beyond those provided by applicable law.
+A repository license has not yet been selected by the authors. Until one is added, the
+repository remains publicly readable but no additional reuse rights are granted beyond
+those provided by applicable law.
