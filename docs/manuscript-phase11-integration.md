@@ -12,7 +12,7 @@ DCTR is an approval-continuity reference design, not a calibrated risk model or 
 
 - operational baseline `O_t`;
 - last human-reviewed anchor `H_t`;
-- active grant bound to `h(O_t)`;
+- active grant binds both `h(O_t)` and `h(H_t)`;
 - local delta `D_local = Delta(O_t,C)`;
 - cumulative delta `D_cum = Delta(H_t,C)`;
 - effective reference-policy level `L_eff = max(L(D_local), L(D_cum))`.
@@ -49,6 +49,9 @@ Held-out evaluation:
 - ordinal Krippendorff alpha: 0.764;
 - cluster-macro exact agreement: 94.5%;
 - pattern-deduplicated exact agreement: 96.4%;
+- post-protocol unit-bootstrap kappa 95% interval: 0.472-0.905;
+- post-protocol cluster-bootstrap kappa 95% interval: 0.146-1.000;
+- post hoc SPLW01-excluded diagnostic: kappa 1.000 on 23 units;
 - six disagreements, all in the coordinated Playwright filename/path-description cluster;
 - six disagreements adjudicated by A+B consensus to R2a/L2 after pre-adjudication metrics were frozen.
 
@@ -71,3 +74,13 @@ The three-case runtime triangulation remains scoped corroboration only.
 - The controlled R0-R4 suite is policy-conformance coverage, not natural prevalence data.
 - Contract semantics do not prove hidden implementation behavior.
 - Reliability metrics measure codebook reproducibility, not detector accuracy or attack probability.
+
+
+## Phase-12 claim hardening
+
+- The human-reviewed anchor is digest-bound and integrity-checked independently of the operational baseline.
+- Lemma 2 is scoped: max-over-path composition does not guarantee detection of emergent interactions among individually bounded paths.
+- The held-out DCTR labels used in the external comparison are explicitly described as human-adjudicated codebook outputs, not automatic-classifier predictions.
+- End-to-end review-workload reduction is not claimed; semantic automation requires a separately validated classifier or conservative human escalation.
+- Table 7a cross-tabulates DCTR levels against Microsoft's specific-drift/rug-pull outcomes and highlights P01 as a granularity example without a superiority claim.
+- The natural held-out set has only one L3 path unit and no L4 path unit, so a new blind synthetic boundary challenge is prepared separately; its results must not be claimed until completed.
