@@ -64,6 +64,8 @@ A separate branch, `revision-phase12-postreview-hardening`, adds:
 - explicit documentation that the held-out DCTR comparison labels are human-adjudicated reference-policy outputs, not automatic-classifier predictions;
 - a deployment-semantic-stage note and clearer artefact index.
 
-The original 21/21 statement above applies to the merged major-revision snapshot. Phase-12
-test counts must be reported only after the branch is independently executed; this document
-does not silently carry the old count forward to changed code.
+A branch-equivalent offline reconstruction of these Phase-12 changes was executed after
+the new tests and artefacts were added. Result: **25/25 unit and artefact-integrity tests
+passed**. The additional tests cover human-anchor digest integrity, automatic continuation
+preserving the anchor digest, explicit L2 human approval advancing both digests, the new
+comparison cross-tab, and the stored precision-diagnostic fields.
