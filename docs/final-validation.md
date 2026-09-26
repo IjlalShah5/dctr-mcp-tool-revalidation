@@ -13,6 +13,9 @@ Held-out semantic reproducibility is complete:
 - ordinal Krippendorff alpha: 0.764;
 - cluster-macro exact agreement: 94.5%;
 - pattern-deduplicated exact agreement: 96.4%;
+- post-protocol unit-bootstrap kappa 95% interval: 0.472-0.905;
+- post-protocol cluster-bootstrap kappa 95% interval: 0.146-1.000;
+- post hoc SPLW01-excluded localization diagnostic: kappa 1.000 on 23 units;
 - six disagreements, all in the coordinated Playwright filename/path-description cluster;
 - all six adjudicated by A+B consensus to R2a/L2 after independent metrics were frozen.
 
@@ -22,7 +25,7 @@ A branch-equivalent offline reconstruction was executed with the vendored RFC 87
 
 Result: **21/21 unit and artefact-integrity tests passed**.
 
-Coverage includes:
+Coverage on the merged major-revision snapshot included:
 - `true != 1`;
 - `1 == 1.0`;
 - `-0 == 0`;
@@ -47,3 +50,22 @@ Coverage includes:
 ## Claim boundary
 
 The tests establish conformance of the reference implementation and integrity of retained artefacts. They do not establish general MCP runtime security, attack prevalence, or calibrated L0-L4 risk.
+
+
+## Phase-12 post-review hardening
+
+A separate branch, `revision-phase12-postreview-hardening`, adds:
+
+- independent integrity binding/checking for the human-reviewed anchor digest;
+- explicit control-flow tests for automatic L2 continuation versus explicit L2 human approval;
+- a scope caveat for cross-path semantic interactions in the staircase lemma;
+- bootstrap precision diagnostics for annotation reliability;
+- a DCTR/Microsoft decision cross-tab and P01 granularity example;
+- explicit documentation that the held-out DCTR comparison labels are human-adjudicated reference-policy outputs, not automatic-classifier predictions;
+- a deployment-semantic-stage note and clearer artefact index.
+
+A branch-equivalent offline reconstruction of these Phase-12 changes was executed after
+the new tests and artefacts were added. Result: **25/25 unit and artefact-integrity tests
+passed**. The additional tests cover human-anchor digest integrity, automatic continuation
+preserving the anchor digest, explicit L2 human approval advancing both digests, the new
+comparison cross-tab, and the stored precision-diagnostic fields.

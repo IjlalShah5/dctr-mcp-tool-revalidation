@@ -59,7 +59,9 @@ class JCSCanonicalizationTests(unittest.TestCase):
 class DualBaselineTests(unittest.TestCase):
     def setUp(self):
         self.A = {"scope": 1}
-        self.grant = Grant("s", "t", sha256_digest(self.A), "p0", "t0")
+        self.grant = Grant(
+            "s", "t", sha256_digest(self.A), sha256_digest(self.A), "p0", "t0"
+        )
         self.state = TrustState(self.A, self.A, self.grant)
 
     def call(self, state, candidate, approval=None, classifier=scope_classifier, server_id="s", tool_id="t"):
@@ -107,6 +109,7 @@ class DualBaselineTests(unittest.TestCase):
         self.assertEqual(result.state.operational_baseline, candidate)
         self.assertEqual(result.state.human_reviewed_baseline, candidate)
         self.assertEqual(result.state.grant.approved_hash, sha256_digest(candidate))
+        self.assertEqual(result.state.grant.human_reviewed_hash, sha256_digest(candidate))
 
     def test_withdrawal_revokes_and_reintroduction_requires_initial_trust(self):
         withdrawn = self.call(self.state, ABSENT)
@@ -118,6 +121,38 @@ class DualBaselineTests(unittest.TestCase):
         self.assertEqual(reintroduced.status, "INITIAL_TRUST")
         self.assertIsNone(reintroduced.state.grant)
         self.assertIsNone(reintroduced.state.operational_baseline)
+
+
+    def test_human_anchor_integrity_failure_fails_closed(self):
+        corrupted_anchor = {"scope": 99}
+        state = TrustState(self.A, corrupted_anchor, self.grant)
+        result = self.call(state, {"scope": 2})
+        self.assertEqual(result.status, "HUMAN_ANCHOR_INTEGRITY_FAILURE")
+        self.assertEqual(result.decision, Decision.BLOCK)
+        self.assertEqual(result.state, state)
+
+    def test_automatic_continuation_updates_only_operational_digest(self):
+        candidate = {"scope": 2}
+        result = self.call(self.state, candidate)
+        self.assertEqual(result.decision, Decision.ALLOW_CONTINUATION)
+        self.assertEqual(result.state.grant.approved_hash, sha256_digest(candidate))
+        self.assertEqual(
+            result.state.grant.human_reviewed_hash,
+            sha256_digest(self.A),
+        )
+        self.assertEqual(result.state.human_reviewed_baseline, self.A)
+
+    def test_explicit_human_approval_on_l2_also_advances_anchor(self):
+        candidate = {"scope": 2}
+        result = self.call(self.state, candidate, True)
+        self.assertEqual(result.decision, Decision.ALLOW_CONTINUATION)
+        self.assertEqual(result.state.operational_baseline, candidate)
+        self.assertEqual(result.state.human_reviewed_baseline, candidate)
+        self.assertEqual(result.state.grant.approved_hash, sha256_digest(candidate))
+        self.assertEqual(
+            result.state.grant.human_reviewed_hash,
+            sha256_digest(candidate),
+        )
 
     def test_grant_identity_mismatch_fails_closed(self):
         result = self.call(self.state, {"scope": 2}, server_id="different")
