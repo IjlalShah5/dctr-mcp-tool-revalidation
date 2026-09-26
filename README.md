@@ -84,6 +84,11 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
   not presented as preregistration documents and should be read alongside the frozen
   codebook/protocol above.
 
+## Phase-12 validation status
+
+A branch-equivalent offline run passes **25/25** unit and artefact-integrity tests,
+including the new human-anchor integrity and comparison/precision artefact checks.
+
 ## Reproducibility discipline
 
 No transition row, contract projection, source boundary, or semantic label is promoted into the artefact without retained evidence. Coordinated multi-Tool edits are reported at event and cluster level to avoid pseudo-replication. Pre-adjudication reliability remains distinct from post-consensus labels.
