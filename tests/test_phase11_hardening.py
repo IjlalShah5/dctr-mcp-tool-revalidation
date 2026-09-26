@@ -9,7 +9,15 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from canonicalize import canonical_bytes, sha256_digest
 from recursive_diff import json_exact_equal, recursive_diff
-from revalidation_state import Decision, Grant, ReferenceAction, TrustState, revalidate
+from revalidation_state import (
+    ABSENT,
+    Decision,
+    Grant,
+    ReferenceAction,
+    SemanticUncertainty,
+    TrustState,
+    revalidate,
+)
 
 
 def scope_classifier(delta):
@@ -54,15 +62,15 @@ class DualBaselineTests(unittest.TestCase):
         self.grant = Grant("s", "t", sha256_digest(self.A), "p0", "t0")
         self.state = TrustState(self.A, self.A, self.grant)
 
-    def call(self, state, candidate, approval=None):
+    def call(self, state, candidate, approval=None, classifier=scope_classifier, server_id="s", tool_id="t"):
         return revalidate(
             state,
             candidate,
-            server_id="s",
-            tool_id="t",
+            server_id=server_id,
+            tool_id=tool_id,
             policy_context="p",
             approval_time="now",
-            classify_level=scope_classifier,
+            classify_level=classifier,
             explicit_human_approval=approval,
         )
 
@@ -99,6 +107,59 @@ class DualBaselineTests(unittest.TestCase):
         self.assertEqual(result.state.operational_baseline, candidate)
         self.assertEqual(result.state.human_reviewed_baseline, candidate)
         self.assertEqual(result.state.grant.approved_hash, sha256_digest(candidate))
+
+    def test_withdrawal_revokes_and_reintroduction_requires_initial_trust(self):
+        withdrawn = self.call(self.state, ABSENT)
+        self.assertEqual(withdrawn.status, "WITHDRAWN")
+        self.assertEqual(withdrawn.decision, Decision.REVOKE)
+        self.assertEqual(withdrawn.state, TrustState(None, None, None))
+
+        reintroduced = self.call(withdrawn.state, {"scope": 1})
+        self.assertEqual(reintroduced.status, "INITIAL_TRUST")
+        self.assertIsNone(reintroduced.state.grant)
+        self.assertIsNone(reintroduced.state.operational_baseline)
+
+    def test_grant_identity_mismatch_fails_closed(self):
+        result = self.call(self.state, {"scope": 2}, server_id="different")
+        self.assertEqual(result.status, "GRANT_IDENTITY_MISMATCH")
+        self.assertEqual(result.decision, Decision.BLOCK)
+        self.assertEqual(result.state, self.state)
+
+    def test_semantic_uncertainty_requires_explicit_revalidation(self):
+        def uncertain(_delta):
+            raise SemanticUncertainty("meaning cannot be resolved")
+
+        result = self.call(self.state, {"scope": 2}, classifier=uncertain)
+        self.assertEqual(result.status, "SEMANTIC_UNCERTAIN")
+        self.assertEqual(result.action, ReferenceAction.REVALIDATE)
+        self.assertEqual(result.decision, Decision.PENDING)
+        self.assertEqual(result.effective_level, 3)
+        self.assertEqual(result.state, self.state)
+
+    def test_unsupported_jcs_value_fails_closed(self):
+        result = self.call(self.state, {"scope": 2**53})
+        self.assertEqual(result.status, "CANONICALIZATION_FAILURE")
+        self.assertEqual(result.decision, Decision.BLOCK)
+        self.assertEqual(result.state, self.state)
+
+    def test_policy_engine_exception_fails_closed(self):
+        def broken(_delta):
+            raise RuntimeError("boom")
+
+        result = self.call(self.state, {"scope": 2}, classifier=broken)
+        self.assertEqual(result.status, "POLICY_ENGINE_FAILURE")
+        self.assertEqual(result.decision, Decision.BLOCK)
+        self.assertEqual(result.state, self.state)
+
+    def test_l4_quarantine_is_not_overridden_by_human_approval_flag(self):
+        def l4(_delta):
+            return 4
+
+        result = self.call(self.state, {"scope": 2}, approval=True, classifier=l4)
+        self.assertEqual(result.status, "QUARANTINED")
+        self.assertEqual(result.action, ReferenceAction.QUARANTINE)
+        self.assertEqual(result.decision, Decision.QUARANTINE)
+        self.assertEqual(result.state, self.state)
 
 
 if __name__ == "__main__":
