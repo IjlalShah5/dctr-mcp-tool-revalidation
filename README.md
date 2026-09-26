@@ -66,6 +66,7 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
 - `docs/heldout-annotation-results.md` — pre-adjudication reliability, adjudication, and disagreement analysis.
 - `docs/formal-properties-phase11.md` — state properties and scope conditions.
 - `docs/deployment-semantic-stage.md` — explicit boundary between automated evidence/state handling and semantic classification.
+- `docs/boundary-challenge-protocol.md` — separate blind synthetic L2/L3/L4 boundary challenge; results pending.
 - `docs/baseline-comparison-36.md` — ETDI/Microsoft/DCTR decision-structure comparison.
 - `docs/runtime-validation-report.md` — controlled runtime-alignment subset.
 
