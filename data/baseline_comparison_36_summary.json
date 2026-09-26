@@ -1,0 +1,31 @@
+{
+  "natural_mutations": 36,
+  "etdi_style": {
+    "EXPLICIT_REAPPROVAL": 36
+  },
+  "microsoft_specific": {
+    "INFO": 7,
+    "CRITICAL": 2,
+    "WARNING": 3,
+    "NOT_COVERED": 24
+  },
+  "microsoft_rug_pull": {
+    "CRITICAL": 26,
+    "NOT_COVERED": 10
+  },
+  "dctr_all_36": {
+    "L1": 13,
+    "L2": 21,
+    "L3": 2,
+    "L0": 0,
+    "L4": 0
+  },
+  "dctr_heldout_32": {
+    "L1": 13,
+    "L2": 18,
+    "L3": 1,
+    "L0": 0,
+    "L4": 0
+  },
+  "note": "P01-P04 are development-set author-reference outputs; the supplementary 32 use independently coded and adjudicated held-out consensus outputs. The all-36 DCTR distribution is a mixed decision-structure view, not a single held-out performance sample."
+}

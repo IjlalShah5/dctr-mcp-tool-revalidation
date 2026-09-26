@@ -1,0 +1,16 @@
+{
+  "heldout_path_units": 34,
+  "heldout_mutations": 32,
+  "heldout_clusters": 10,
+  "pre_adjudication_exact_agreement": 0.8235294117647058,
+  "pre_adjudication_agreed_units": 28,
+  "pre_adjudication_disagreements": 6,
+  "linear_weighted_cohen_kappa": 0.7197802197802198,
+  "ordinal_krippendorff_alpha": 0.7635294117647059,
+  "cluster_macro_exact_agreement": 0.9454545454545455,
+  "pattern_macro_exact_agreement": 0.9636363636363636,
+  "adjudicated_units": 6,
+  "adjudication_method": "A+B consensus",
+  "final_path_level_distribution": {"L0": 1, "L1": 13, "L2": 19, "L3": 1, "L4": 0},
+  "final_mutation_level_distribution": {"L0": 0, "L1": 13, "L2": 18, "L3": 1, "L4": 0}
+}

@@ -1,0 +1,33 @@
+mutation_id,cluster_id,path_units,final_level,composed_rule,max_path_rule,tools,paths
+CFXM01,SCFX01,1,L2,R2a,R2a,cfx_get_metrics,/description
+CFXM02,SCFX02,1,L1,R1,R1,cfx_get_config,/description
+CFXM03,SCFX02,1,L1,R1,R1,cfx_set_config,/description
+CFXM04,SCFX02,1,L1,R1,R1,cfx_toggle_overlay_entry,/description
+CFXM05,SCFX02,1,L2,R2a,R2a,cfx_get_overlay_entries,/description
+CFXM06,SCFX03,1,L2,R2a,R2a,cfx_set_osd_options,/inputSchema/properties/hookFreeRefreshRate
+CFXM07,SCFX04,1,L2,R2a,R2a,cfx_set_osd_options,/inputSchema/properties/overlayPositionHotkey
+CFXM08,SCFX05,1,L2,R2a,R2a,cfx_set_osd_options,/inputSchema/properties/hookFreeRefreshRate/description
+PLWM01,SPLW01,1,L2,R2a,R2a,browser_console_messages,/inputSchema/properties/filename/description
+PLWM02,SPLW01,1,L2,R2a,R2a,browser_evaluate,/inputSchema/properties/filename/description
+PLWM03,SPLW01,1,L2,R2a,R2a,browser_network_requests,/inputSchema/properties/filename/description
+PLWM04,SPLW01,1,L2,R2a,R2a,browser_network_request,/inputSchema/properties/filename/description
+PLWM05,SPLW01,1,L2,R2a,R2a,browser_pdf_save,/inputSchema/properties/filename/description
+PLWM06,SPLW01,1,L2,R2a,R2a,browser_run_code_unsafe,/inputSchema/properties/filename/description
+PLWM07,SPLW01,1,L2,R2a,R2a,browser_take_screenshot,/inputSchema/properties/filename/description
+PLWM08,SPLW01,1,L2,R2a,R2a,browser_snapshot,/inputSchema/properties/filename/description
+PLWM09,SPLW01,1,L2,R2a,R2a,browser_storage_state,/inputSchema/properties/filename/description
+PLWM10,SPLW01,1,L2,R2a,R2a,browser_set_storage_state,/inputSchema/properties/filename/description
+PLWM11,SPLW01,1,L2,R2a,R2a,browser_start_video,/inputSchema/properties/filename/description
+PLWM12,SPLW02,1,L2,R2a,R2a,browser_start_video,/inputSchema/properties/fps
+TFMX01,STFM01,1,L1,R1,R1,get_latest_module_version,/annotations/destructiveHint
+TFMX02,STFM01,1,L1,R1,R1,get_latest_provider_version,/annotations/destructiveHint
+TFMX03,STFM01,1,L1,R1,R1,get_module_details,/annotations/destructiveHint
+TFMX04,STFM01,1,L1,R1,R1,get_policy_details,/annotations/destructiveHint
+TFMX05,STFM01,1,L1,R1,R1,get_provider_details,/annotations/destructiveHint
+TFMX06,STFM01,1,L1,R1,R1,list_terraform_orgs,/annotations/destructiveHint
+TFMX07,STFM01,1,L1,R1,R1,list_terraform_projects,/annotations/destructiveHint
+TFMX08,STFM01,1,L1,R1,R1,search_modules,/annotations/destructiveHint
+TFMX09,STFM01,1,L1,R1,R1,search_policies,/annotations/destructiveHint
+TFMX10,STFM01,1,L1,R1,R1,search_providers,/annotations/destructiveHint
+TFMX11,STFM02,2,L2,RC,R2b,create_run,/annotations/destructiveHint; /inputSchema/properties/run_type/enum
+TFMX12,STFM03,2,L3,RC,R3a,get_private_module_details,/description; /inputSchema/properties/private_module_id/description

@@ -1,0 +1,35 @@
+unit_id,mutation_id,cluster_id,server_family,tool_identity,path,pattern_group,evidence_status,semantic_label_status
+H001,CFXM01,SCFX01,CXWorld/CapFrameX,cfx_get_metrics,/description,PATTERN_CFXM01_/description,source-diff-verified,pending independent annotation
+H002,CFXM02,SCFX02,CXWorld/CapFrameX,cfx_get_config,/description,PATTERN_CFXM02_/description,source-diff-verified,pending independent annotation
+H003,CFXM03,SCFX02,CXWorld/CapFrameX,cfx_set_config,/description,PATTERN_CFXM03_/description,source-diff-verified,pending independent annotation
+H004,CFXM04,SCFX02,CXWorld/CapFrameX,cfx_toggle_overlay_entry,/description,PATTERN_CFXM04_/description,source-diff-verified,pending independent annotation
+H005,CFXM05,SCFX02,CXWorld/CapFrameX,cfx_get_overlay_entries,/description,PATTERN_CFXM05_/description,source-diff-verified,pending independent annotation
+H006,CFXM06,SCFX03,CXWorld/CapFrameX,cfx_set_osd_options,/inputSchema/properties/hookFreeRefreshRate,PATTERN_CFXM06_/inputSchema/properties/hookFreeRefreshRate,source-diff-verified,pending independent annotation
+H007,CFXM07,SCFX04,CXWorld/CapFrameX,cfx_set_osd_options,/inputSchema/properties/overlayPositionHotkey,PATTERN_CFXM07_/inputSchema/properties/overlayPositionHotkey,source-diff-verified,pending independent annotation
+H008,CFXM08,SCFX05,CXWorld/CapFrameX,cfx_set_osd_options,/inputSchema/properties/hookFreeRefreshRate/description,PATTERN_CFXM08_/inputSchema/properties/hookFreeRefreshRate/description,source-diff-verified,pending independent annotation
+H009,TFMX01,STFM01,Terraform MCP,get_latest_module_version,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H010,TFMX02,STFM01,Terraform MCP,get_latest_provider_version,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H011,TFMX03,STFM01,Terraform MCP,get_module_details,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H012,TFMX04,STFM01,Terraform MCP,get_policy_details,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H013,TFMX05,STFM01,Terraform MCP,get_provider_details,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H014,TFMX06,STFM01,Terraform MCP,list_terraform_orgs,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H015,TFMX07,STFM01,Terraform MCP,list_terraform_projects,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H016,TFMX08,STFM01,Terraform MCP,search_modules,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H017,TFMX09,STFM01,Terraform MCP,search_policies,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H018,TFMX10,STFM01,Terraform MCP,search_providers,/annotations/destructiveHint,PATTERN_TFM_DESTRUCTIVE_HINT_ABSENT_TO_FALSE,source-diff-verified,pending independent annotation
+H019,TFMX11,STFM02,Terraform MCP,create_run,/annotations/destructiveHint,PATTERN_TFMX11_/annotations/destructiveHint,source-diff-verified,pending independent annotation
+H020,TFMX11,STFM02,Terraform MCP,create_run,/inputSchema/properties/run_type/enum,PATTERN_TFMX11_/inputSchema/properties/run_type/enum,source-diff-verified,pending independent annotation
+H021,TFMX12,STFM03,Terraform MCP,get_private_module_details,/description,PATTERN_TFMX12_/description,source-diff-verified,pending independent annotation
+H022,TFMX12,STFM03,Terraform MCP,get_private_module_details,/inputSchema/properties/private_module_id/description,PATTERN_TFMX12_/inputSchema/properties/private_module_id/description,source-diff-verified,pending independent annotation
+H023,PLWM01,SPLW01,Playwright MCP,browser_console_messages,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H024,PLWM02,SPLW01,Playwright MCP,browser_evaluate,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H025,PLWM03,SPLW01,Playwright MCP,browser_network_requests,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H026,PLWM04,SPLW01,Playwright MCP,browser_network_request,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H027,PLWM05,SPLW01,Playwright MCP,browser_pdf_save,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H028,PLWM06,SPLW01,Playwright MCP,browser_run_code_unsafe,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H029,PLWM07,SPLW01,Playwright MCP,browser_take_screenshot,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H030,PLWM08,SPLW01,Playwright MCP,browser_snapshot,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H031,PLWM09,SPLW01,Playwright MCP,browser_storage_state,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H032,PLWM10,SPLW01,Playwright MCP,browser_set_storage_state,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H033,PLWM11,SPLW01,Playwright MCP,browser_start_video,/inputSchema/properties/filename/description,PATTERN_PLW_FILENAME_PATH_GUIDANCE,source-diff-verified,pending independent annotation
+H034,PLWM12,SPLW02,Playwright MCP,browser_start_video,/inputSchema/properties/fps,PATTERN_PLWM12_/inputSchema/properties/fps,source-diff-verified,pending independent annotation

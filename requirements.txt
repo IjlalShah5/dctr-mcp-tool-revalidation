@@ -1,2 +1,3 @@
-# DCTR core verification scripts use only the Python standard library.
-# Python >= 3.10 is recommended.
+# DCTR reference artefact dependencies.
+# RFC 8785 / JSON Canonicalization Scheme implementation.
+rfc8785==0.1.4
