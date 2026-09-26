@@ -48,6 +48,7 @@ class Grant:
     server_id: str
     tool_id: str
     approved_hash: str
+    human_reviewed_hash: str
     policy_context: str
     approval_time: str
 
@@ -181,6 +182,16 @@ def revalidate(
             (), (), state, candidate_hash
         )
 
+    # The cumulative human-reviewed anchor is also integrity-bound. Otherwise a
+    # corrupted or tampered stored anchor could silently change the cumulative
+    # comparison that underpins staircase-drift escalation.
+    if anchor_hash != grant.human_reviewed_hash:
+        return RevalidationResult(
+            "HUMAN_ANCHOR_INTEGRITY_FAILURE", None, None, None,
+            ReferenceAction.FAIL_CLOSED, Decision.BLOCK,
+            (), (), state, candidate_hash
+        )
+
     if candidate_hash == grant.approved_hash:
         return RevalidationResult(
             "STABLE_ACCEPT", 0, 0, 0,
@@ -240,19 +251,23 @@ def revalidate(
         )
 
     if decision == Decision.ALLOW_CONTINUATION:
+        if explicit_human_approval is True:
+            new_anchor = advertised
+            new_human_reviewed_hash = candidate_hash
+            status = "HUMAN_APPROVED_CONTINUATION"
+        else:
+            new_anchor = anchor
+            new_human_reviewed_hash = grant.human_reviewed_hash
+            status = "POLICY_AUTHORISED_CONTINUATION"
+
         new_grant = replace(
             grant,
             approved_hash=candidate_hash,
+            human_reviewed_hash=new_human_reviewed_hash,
             policy_context=policy_context,
             approval_time=approval_time,
         )
-        new_anchor = advertised if explicit_human_approval is True else anchor
         new_state = TrustState(advertised, new_anchor, new_grant)
-        status = (
-            "HUMAN_APPROVED_CONTINUATION"
-            if explicit_human_approval is True
-            else "POLICY_AUTHORISED_CONTINUATION"
-        )
     else:
         new_state = state
         status = {
