@@ -4,7 +4,7 @@ This repository is the reproducibility artefact for the revised DCTR manuscript 
 
 ## Revision status
 
-The major-revision work was developed on `revision-phase11-hardening` in PR #1. The branch now includes the completed held-out annotation results and adjudicated outputs in addition to the state-model, corpus, comparison, runtime, and conformance revisions.
+The major-revision work was developed on `revision-phase11-hardening` in PR #1. Post-review hardening is isolated on `revision-phase12-postreview-hardening` in PR #2 so the merged major-revision snapshot remains immutable while final reviewer-facing clarifications are audited separately.
 
 ## What DCTR evaluates
 
@@ -12,7 +12,7 @@ DCTR asks whether a prior approval remains transferable when an authenticated, c
 
 1. deterministic change evidence — RFC 8785/JCS canonical identity, SHA-256, direction-preserving recursive deltas, and fail-closed consistency checks;
 2. security-semantic interpretation — explicit TSV/reference-policy coding;
-3. trust-renewal state — an operational grant-bound baseline plus a last human-reviewed anchor used to detect cumulative staircase drift.
+3. trust-renewal state — an operational grant-bound baseline plus a separately digest-bound last human-reviewed anchor used to detect cumulative staircase drift.
 
 Runtime authorization, provenance, sandboxing, and hidden implementation behavior remain separate controls.
 
@@ -43,6 +43,10 @@ reported as transparency diagnostics, not pre-specified inference.
 
 Six disagreements were localized to the coordinated Playwright filename/path-description cluster and were adjudicated by A+B consensus to R2a/L2 after the independent metrics were frozen.
 
+The natural held-out set contains only one L3 path unit and no L4 path unit. The manuscript therefore treats reliability at L2/L3 and L3/L4 as a limitation rather than implying that the natural sample validates every policy boundary. The controlled conformance fixtures cover those rules only as author-defined design tests, not as independent natural-label evidence.
+
+The two annotators consented to participation and to publication of anonymized annotation outputs and broad professional-background descriptors. No direct identifiers or sensitive personal data are published.
+
 See `docs/heldout-annotation-results.md` and the final annotation data files under `data/`.
 
 ## External comparison
@@ -52,7 +56,7 @@ See `docs/heldout-annotation-results.md` and the final annotation data files und
 - Microsoft MCP Security Gateway documented specific schema-drift and rug-pull rules;
 - DCTR development-set reference outputs for P01-P04 and held-out consensus outputs for the supplementary 32.
 
-Unsupported Microsoft surfaces are recorded as `NOT_COVERED`; no severity is invented.
+Unsupported Microsoft surfaces are recorded as `NOT_COVERED`; no severity is invented. `data/baseline_crosstab_36.csv` summarizes the DCTR/Microsoft decision structure without converting unlike scales into an accuracy ranking.
 
 ## Runtime triangulation
 
@@ -63,12 +67,12 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
 **Core reproducibility documents**
 - `docs/DCTR-CB-1.0-FROZEN.md` — frozen semantic codebook used for held-out coding.
 - `docs/annotation-protocol-heldout.md` — held-out design, blinding, outcomes, and later precision diagnostics.
-- `docs/heldout-annotation-results.md` — pre-adjudication reliability, adjudication, and disagreement analysis.
-- `docs/formal-properties-phase11.md` — state properties and scope conditions.
+- `docs/heldout-annotation-results.md` — pre-adjudication reliability, adjudication, disagreement analysis, and boundary limitation.
+- `docs/formal-properties-phase11.md` — state properties, digest-integrity conditions, and scope conditions.
 - `docs/deployment-semantic-stage.md` — explicit boundary between automated evidence/state handling and semantic classification.
-- `docs/boundary-challenge-protocol.md` — separate blind synthetic L2/L3/L4 boundary challenge; results pending.
 - `docs/baseline-comparison-36.md` — ETDI/Microsoft/DCTR decision-structure comparison.
 - `docs/runtime-validation-report.md` — controlled runtime-alignment subset.
+- `docs/ethics-checkpoint.md` — anonymized expert-annotation governance and consent record.
 
 **Core data**
 - `data/heldout_annotation_unit_index.csv`
@@ -88,7 +92,7 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
 ## Phase-12 validation status
 
 A branch-equivalent offline run passes **25/25** unit and artefact-integrity tests,
-including the new human-anchor integrity and comparison/precision artefact checks.
+including the human-anchor integrity and comparison/precision artefact checks.
 
 ## Reproducibility discipline
 
@@ -98,7 +102,7 @@ No transition row, contract projection, source boundary, or semantic label is pr
 
 A formal citation entry is provided in `CITATION.cff`. Commit
 `0a95678737d3e79fbbf991710352b39241ee4156` is the immutable merged major-revision
-snapshot. Phase-12 post-review hardening is developed separately on
+snapshot. Final post-review hardening is developed separately on
 `revision-phase12-postreview-hardening`.
 
 No archival GitHub release/Zenodo DOI is claimed until the authors explicitly create one.
