@@ -1,0 +1,4 @@
+dctr_level,microsoft_specific_INFO,microsoft_specific_WARNING,microsoft_specific_CRITICAL,microsoft_specific_NOT_COVERED,microsoft_rug_pull_CRITICAL,microsoft_rug_pull_NOT_COVERED
+L1,3,0,0,10,3,10
+L2,3,3,2,13,21,0
+L3,1,0,0,1,2,0

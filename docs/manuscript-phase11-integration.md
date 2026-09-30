@@ -1,4 +1,4 @@
-# Phase 11 manuscript integration map
+# Phase 11/12 manuscript integration map
 
 ## Positioning
 
@@ -6,18 +6,18 @@ Preferred revised title:
 
 **Directional Contract-Transition Revalidation for Model Context Protocol Tools: An Approval-Continuity Framework for Evolving Agent Capabilities**
 
-DCTR is an approval-continuity reference design, not a calibrated risk model or runtime detector.
+DCTR is an approval-continuity reference design, not a calibrated risk model, runtime detector, or fully automatic semantic classifier.
 
 ## Core state model
 
 - operational baseline `O_t`;
 - last human-reviewed anchor `H_t`;
-- active grant bound to `h(O_t)`;
+- active grant binds both `h(O_t)` and `h(H_t)`;
 - local delta `D_local = Delta(O_t,C)`;
 - cumulative delta `D_cum = Delta(H_t,C)`;
 - effective reference-policy level `L_eff = max(L(D_local), L(D_cum))`.
 
-Automatic L0-L2 continuation may advance `O_t`; only explicit human approval advances `H_t`.
+Automatic L0-L2 continuation may advance `O_t`; only explicit human approval advances `H_t`. Both stored baselines are independently digest-checked before stability or cumulative comparison.
 
 ## Canonical identity
 
@@ -49,6 +49,9 @@ Held-out evaluation:
 - ordinal Krippendorff alpha: 0.764;
 - cluster-macro exact agreement: 94.5%;
 - pattern-deduplicated exact agreement: 96.4%;
+- post-protocol unit-bootstrap kappa 95% interval: 0.472-0.905;
+- post-protocol cluster-bootstrap kappa 95% interval: 0.146-1.000;
+- post hoc SPLW01-excluded diagnostic: kappa 1.000 on 23 units;
 - six disagreements, all in the coordinated Playwright filename/path-description cluster;
 - six disagreements adjudicated by A+B consensus to R2a/L2 after pre-adjudication metrics were frozen.
 
@@ -57,6 +60,10 @@ Final held-out mutation-level distribution after max-path composition:
 - L2: 18;
 - L3: 1;
 - L0/L4: 0.
+
+The natural held-out set contains only one L3 path and no L4 path. The manuscript reports this as a limitation rather than generalizing the reliability statistic to every L2/L3/L4 boundary. Controlled conformance fixtures are author-defined policy tests, not independent natural-label evidence.
+
+Both annotators consented to participation and anonymized publication of their labels and broad professional-background descriptors.
 
 ## Comparison / runtime boundaries
 
@@ -71,3 +78,6 @@ The three-case runtime triangulation remains scoped corroboration only.
 - The controlled R0-R4 suite is policy-conformance coverage, not natural prevalence data.
 - Contract semantics do not prove hidden implementation behavior.
 - Reliability metrics measure codebook reproducibility, not detector accuracy or attack probability.
+- Held-out DCTR labels are human-adjudicated codebook outputs, not automatic-classifier predictions.
+- End-to-end review-workload reduction is not claimed.
+- Max-over-path composition does not guarantee detection of emergent interactions among individually bounded paths.

@@ -54,3 +54,20 @@ Agreement measures reproducibility of the frozen reference policy, not calibrate
 ## Audit trail
 
 The held-out evidence, codebook, and calibration materials in the returned forms match the frozen versions. An instruction-sheet edit and a start-date clerical correction were recorded in the administrative audit. The administrator reconfirmed independence and no AI/other-person assistance with both annotators. Original returned files and pre-adjudication statistics remain archived separately from consensus outputs.
+
+
+## Post-protocol precision diagnostics
+
+The frozen protocol above did not predeclare confidence intervals. After the completed
+analysis, the repository added deterministic percentile-bootstrap precision diagnostics
+for transparency rather than presenting them as pre-specified inference:
+
+- 50,000 unit-level resamples, seed 20260926: weighted-kappa 95% interval 0.472-0.905;
+- 50,000 cluster-level resamples over the 10 maintainer clusters, same seed:
+  weighted-kappa 95% interval 0.146-1.000;
+- 49,727/50,000 cluster resamples had defined kappa; degenerate marginal samples were
+  excluded from percentile calculation;
+- post hoc localization diagnostic excluding SPLW01: 23 units, weighted kappa 1.000.
+
+These diagnostics quantify imprecision and concentration of disagreement; they do not
+alter the frozen pre-adjudication point estimates.

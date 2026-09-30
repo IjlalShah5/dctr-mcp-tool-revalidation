@@ -19,6 +19,23 @@ Pre-adjudication metrics were frozen before either annotator saw the other's lab
 
 Six L0-L4 disagreements occurred, all within the coordinated Playwright filename/path-description cluster `SPLW01`. Annotator A treated six workspace-root filename-description changes as R1/L1 clarification; Annotator B treated them as R2a/L2 bounded resource-scope semantics.
 
+## Precision diagnostics
+
+The frozen protocol did not predeclare confidence intervals. To avoid hiding sampling
+uncertainty, a later transparent precision analysis reports percentile bootstrap intervals
+with 50,000 resamples and seed `20260926`:
+
+- unit-resampled 95% interval for linear-weighted kappa: **0.472-0.905**;
+- cluster-resampled 95% interval: **0.146-1.000** (49,727/50,000 resamples had defined kappa).
+
+The intervals are wide because the held-out study contains only 34 path units and 10
+clusters. They are precision diagnostics rather than hypothesis tests or additional
+independent evidence.
+
+A post hoc localization diagnostic excluding the coordinated `SPLW01` cluster leaves
+23 path units and yields kappa **1.000**. This is not a replacement reliability estimate;
+it identifies where the observed disagreement is concentrated.
+
 ## Adjudication
 
 After the independent metrics were frozen, the six disagreements were reviewed by Annotators A and B. All six were resolved by documented A+B consensus to **R2a/L2**: the newly explicit workspace-root resolution sentence changes client-visible file-location semantics in a bounded ordinary way without evidencing a security-boundary expansion.
@@ -37,6 +54,22 @@ After max-path composition to the 32 mutation-level outputs:
 - L0/L4: 0
 
 These are reference-policy outputs, not calibrated attack probabilities, runtime-harm scores, or ecosystem prevalence estimates.
+
+## Codebook insight from disagreement
+
+The disagreement is informative rather than merely noise. The eleven coordinated
+Playwright edits share a rollout pattern but are not textually identical: some only add
+the workspace-root resolution clause, while others also restate default output location
+or broaden "markdown file" to "a file". The six disagreements isolate a fragile codebook
+boundary: when previously implicit behavior becomes explicit, is that R1 maintenance or
+R2a bounded semantics? The adjudication selected R2a for these file-location clauses,
+but the result is not retroactively generalized into a new rule for unrelated prose.
+
+This boundary also clarifies why P01 remains different. R3c is reserved for a newly
+explicit **material risk** that changes the informational basis of approval; ordinary
+implicit-to-explicit operational detail does not become L3 merely because it is newly
+stated. A future codebook revision should include dedicated boundary examples for
+implicit-to-explicit disclosures before any new evaluation.
 
 ## Protocol audit note
 

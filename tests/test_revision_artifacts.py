@@ -65,6 +65,21 @@ class RevisionArtifactTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["pre_adjudication_exact_agreement"], 28 / 34)
         self.assertAlmostEqual(metrics["linear_weighted_cohen_kappa"], 0.7197802197802198)
         self.assertAlmostEqual(metrics["ordinal_krippendorff_alpha"], 0.7635294117647059)
+        self.assertEqual(metrics["bootstrap_reps"], 50000)
+        self.assertEqual(metrics["bootstrap_seed"], 20260926)
+        self.assertEqual(metrics["unit_bootstrap_kappa_95_ci"], [0.472, 0.905])
+        self.assertEqual(metrics["cluster_bootstrap_kappa_95_ci"], [0.146, 1.0])
+        self.assertEqual(metrics["kappa_excluding_SPLW01"], 1.0)
+        self.assertEqual(metrics["units_excluding_SPLW01"], 23)
+
+    def test_baseline_crosstab(self):
+        rows = read_csv("baseline_crosstab_36.csv")
+        self.assertEqual(len(rows), 3)
+        by_level = {r["dctr_level"]: r for r in rows}
+        self.assertEqual(by_level["L3"]["microsoft_specific_INFO"], "1")
+        self.assertEqual(by_level["L3"]["microsoft_specific_NOT_COVERED"], "1")
+        self.assertEqual(by_level["L3"]["microsoft_rug_pull_CRITICAL"], "2")
+        self.assertEqual(by_level["L1"]["microsoft_rug_pull_NOT_COVERED"], "10")
 
 
 if __name__ == "__main__":
