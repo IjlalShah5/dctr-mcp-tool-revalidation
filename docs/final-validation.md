@@ -59,9 +59,9 @@ The tests establish conformance of the reference implementation and integrity of
 
 The staircase property is also scoped: max-over-path composition does not by itself guarantee detection of emergent security interactions among multiple individually bounded path changes.
 
-## Phase-12 reviewer hardening
+## Merged Phase-12 reviewer hardening
 
-The final Phase-12 branch adds:
+The merged Phase-12 hardening adds:
 
 - independent integrity binding/checking for the human-reviewed anchor digest;
 - explicit control-flow tests for automatic continuation versus explicit human approval;
