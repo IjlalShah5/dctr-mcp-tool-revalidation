@@ -4,7 +4,7 @@ This repository is the reproducibility artefact for the revised DCTR manuscript 
 
 ## Revision status
 
-The major-revision work was developed on `revision-phase11-hardening` in PR #1. Post-review hardening is isolated on `revision-phase12-postreview-hardening` in PR #2 so the merged major-revision snapshot remains immutable while final reviewer-facing clarifications are audited separately.
+The major-revision work was developed in PR #1 and the final post-review hardening in PR #2. Both revision sets are now merged into the default `main` branch so reviewers opening the repository see the complete submission artefact, including the dual-baseline integrity hardening, reliability precision diagnostics, and DCTR/Microsoft cross-tabulation.
 
 ## What DCTR evaluates
 
@@ -100,10 +100,7 @@ No transition row, contract projection, source boundary, or semantic label is pr
 
 ## Citation and release
 
-A formal citation entry is provided in `CITATION.cff`. Commit
-`0a95678737d3e79fbbf991710352b39241ee4156` is the immutable merged major-revision
-snapshot. Final post-review hardening is developed separately on
-`revision-phase12-postreview-hardening`.
+A formal citation entry is provided in `CITATION.cff`. The complete journal-resubmission artefact is now on the default `main` branch. The manuscript and reviewer-response letters should cite one final `main` commit after the submission files are synchronized.
 
 No archival GitHub release/Zenodo DOI is claimed until the authors explicitly create one.
 
