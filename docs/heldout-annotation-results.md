@@ -76,3 +76,16 @@ implicit-to-explicit disclosures before any new evaluation.
 The returned workbooks preserved the held-out evidence, frozen codebook, and calibration materials. An administrative deviation was recorded because each annotator edited the `START HERE` instruction by removing the sentence prohibiting AI/other-person assistance. The administrator subsequently reconfirmed with both annotators that the actual annotation start date was 2026-09-25, each annotator personally made that instruction-sheet edit, neither used generative AI or another person to decide labels, and neither saw the other annotator's answers before completion.
 
 Original returned workbooks and pre-adjudication metrics are retained separately from adjudicated outputs.
+
+## Round-2 ordinal-alpha correction
+
+The previously reported 0.764 statistic was calculated using squared
+numerical L0–L4 code distances and was therefore interval-distance alpha,
+not ordinal Krippendorff alpha. Correcting the distance function to use
+pooled-category rank mass (including half-weighted endpoint frequencies)
+gives **ordinal alpha = 0.7081173067105337**, reported as **0.708**. The
+same 34 frozen, pre-adjudication annotation pairs are used; no labels were
+altered. The primary linear-weighted Cohen kappa **0.720**, exact agreement
+**28/34**, and previously reported kappa confidence intervals remain
+unchanged. `data/heldout_annotation_metrics.json` preserves the former
+mislabelled value in an explicitly named audit field.
