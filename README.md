@@ -32,7 +32,7 @@ The held-out evaluation covers 32 supplementary mutations / 34 path units / 10 c
 Pre-adjudication:
 - exact L0-L4 agreement: **82.4% (28/34)**;
 - linear-weighted Cohen's kappa: **0.720**;
-- ordinal Krippendorff alpha: **0.764**;
+- ordinal Krippendorff alpha: **0.708**;
 - cluster-macro exact agreement: **94.5%**;
 - pattern-deduplicated exact agreement: **96.4%**.
 
