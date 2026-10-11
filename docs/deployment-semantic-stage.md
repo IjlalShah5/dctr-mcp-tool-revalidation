@@ -46,3 +46,28 @@ separate empirical problem. Any future benchmark should report automation covera
 under-escalation relative to an independently defined reference set, false escalation, and
 human-review workload. The present paper does not convert the held-out human labels into an
 automatic-classifier accuracy claim.
+
+## Round-2 persistent quarantine semantics
+
+An L4 classification or a policy-block decision sets a `QuarantineRecord` on the
+returned immutable `TrustState`; baseline/anchor integrity failures also retain
+an inactive quarantine state. The original grant and anchor may remain stored for
+forensics but are **not active** while `state.quarantine` is non-null. Repeated
+discovery of either the original contract or a bounded L2 candidate yields
+`QUARANTINED_LOCKED`, not `STABLE_ACCEPT` or policy continuation. No custom
+enforcer or ordinary approval flag can override an L4 result.
+
+The separate `recover_quarantine` administrative operation requires both
+documented remediation confirmation and explicit human approval. It validates
+grant/anchor integrity, refuses the quarantined candidate digest, recomputes
+local/cumulative evidence, and refuses an L4 recovery candidate. Successful
+reapproval binds *both* anchors to the approved remediated contract and clears
+the lock. Withdrawal revokes the grant and clears its state; any reintroduction
+uses initial trust.
+
+This repository is a **reference state transition library**, not a deployed MCP
+client. A real integrating client MUST atomically persist the returned
+`TrustState` (including the quarantine marker), deny invocations while it is
+locked, and provide an authenticated remediation workflow. An integration that
+does not implement durable storage and invocation enforcement cannot claim
+persistent quarantine from this code alone.
