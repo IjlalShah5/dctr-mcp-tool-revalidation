@@ -1,10 +1,13 @@
 import csv
 import json
 import unittest
+import sys
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from agreement_analysis_heldout import ordinal_alpha, weighted_kappa
 
 
 def read_csv(name):
@@ -71,6 +74,17 @@ class RevisionArtifactTests(unittest.TestCase):
         self.assertEqual(metrics["cluster_bootstrap_kappa_95_ci"], [0.146, 1.0])
         self.assertEqual(metrics["kappa_excluding_SPLW01"], 1.0)
         self.assertEqual(metrics["units_excluding_SPLW01"], 23)
+
+    def test_alpha_and_kappa_are_recomputed_from_original_pre_adjudication_labels(self):
+        rows = read_csv("heldout_annotation_final_path_units.csv")
+        pairs = [(r["a_level"], r["b_level"]) for r in rows]
+        with (ROOT / "data" / "heldout_annotation_metrics.json").open(encoding="utf-8") as fh:
+            metrics = json.load(fh)
+        self.assertEqual(len(pairs), 34)
+        self.assertAlmostEqual(ordinal_alpha(pairs), 0.7081173067105337, places=12)
+        self.assertAlmostEqual(weighted_kappa(pairs), 0.7197802197802198, places=12)
+        self.assertAlmostEqual(metrics["ordinal_krippendorff_alpha"],
+                               ordinal_alpha(pairs), places=12)
 
     def test_baseline_crosstab(self):
         rows = read_csv("baseline_crosstab_36.csv")
