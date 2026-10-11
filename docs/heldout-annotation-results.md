@@ -12,7 +12,7 @@ Pre-adjudication metrics were frozen before either annotator saw the other's lab
 
 - exact L0-L4 agreement: **82.4% (28/34)**;
 - linear-weighted Cohen's kappa: **0.720**;
-- ordinal Krippendorff alpha: **0.764**;
+- ordinal Krippendorff alpha: **0.708**;
 - cluster-macro exact agreement: **94.5%**;
 - predefined pattern-deduplicated exact agreement: **96.4%**;
 - uncertain held-out labels: **0** for each annotator.
