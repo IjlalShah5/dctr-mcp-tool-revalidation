@@ -40,21 +40,35 @@ def weighted_kappa(values):
 
 
 def ordinal_alpha(values):
+    """Krippendorff alpha with ordinal distances based on pooled category ranks.
+
+    Ordinal distance uses the cumulative observed category frequencies between
+    two categories (half-weighted endpoints), squared. Numeric-code squared
+    differences would be *interval* alpha, not ordinal alpha.
+    """
     values = [(LEVEL_NUM[a], LEVEL_NUM[b]) for a, b in values if a in LEVEL_NUM and b in LEVEL_NUM]
     if not values:
         return float("nan")
-    k = len(LEVELS)
-    observed = sum(((a - b) / (k - 1)) ** 2 for a, b in values) / len(values)
-    pooled = [x for pair in values for x in pair]
-    n = len(pooled)
-    if n < 2:
-        return float("nan")
-    expected = 0.0
-    for i, a in enumerate(pooled):
-        for j, b in enumerate(pooled):
-            if i != j:
-                expected += ((a - b) / (k - 1)) ** 2
-    expected /= n * (n - 1)
+    counts = [0] * len(LEVELS)
+    for a, b in values:
+        counts[a] += 1
+        counts[b] += 1
+    n = sum(counts)
+
+    def ordinal_distance(a, b):
+        if a == b:
+            return 0.0
+        lo, hi = sorted((a, b))
+        midpoint_mass = (counts[lo] + counts[hi]) / 2
+        between_mass = sum(counts[lo + 1:hi])
+        return (midpoint_mass + between_mass) ** 2
+
+    observed = sum(ordinal_distance(a, b) for a, b in values) / len(values)
+    expected = sum(
+        counts[a] * counts[b] * ordinal_distance(a, b)
+        for a in range(len(LEVELS))
+        for b in range(len(LEVELS))
+    ) / (n * (n - 1))
     return float("nan") if math.isclose(expected, 0) else 1 - observed / expected
 
 
