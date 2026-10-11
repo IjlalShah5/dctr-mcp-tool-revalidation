@@ -73,3 +73,14 @@ The merged Phase-12 hardening adds:
 - explicit consent/governance wording for the two non-author annotators.
 
 No additional annotation experiment is claimed in the current revision.
+
+## Round-2 changes (added after the 2026-09-28 checkpoint)
+
+The 25/25 result above is a *historical* Phase-12 offline checkpoint.
+New round-2 commits add persistent quarantine and explicit remediation
+reapproval tests, a corrected ordinal-alpha computation derived from the
+original 34 path-unit pairs, corrected primary transition hashes, required-set
+paths, and a 12-row primary TSV/rule/rationale completeness verification.
+The expanded suite and separate primary verifier are configured under
+`.github/workflows/reproducibility.yml`; the original 25/25 count should
+not be reused as the new round-2 test result.
