@@ -17,6 +17,7 @@ from revalidation_state import (
     SemanticUncertainty,
     TrustState,
     revalidate,
+    recover_quarantine,
 )
 
 
@@ -129,7 +130,8 @@ class DualBaselineTests(unittest.TestCase):
         result = self.call(state, {"scope": 2})
         self.assertEqual(result.status, "HUMAN_ANCHOR_INTEGRITY_FAILURE")
         self.assertEqual(result.decision, Decision.BLOCK)
-        self.assertEqual(result.state, state)
+        self.assertEqual(result.state.grant, state.grant)
+        self.assertIsNotNone(result.state.quarantine)
 
     def test_automatic_continuation_updates_only_operational_digest(self):
         candidate = {"scope": 2}
@@ -194,7 +196,70 @@ class DualBaselineTests(unittest.TestCase):
         self.assertEqual(result.status, "QUARANTINED")
         self.assertEqual(result.action, ReferenceAction.QUARANTINE)
         self.assertEqual(result.decision, Decision.QUARANTINE)
-        self.assertEqual(result.state, self.state)
+        self.assertIsNotNone(result.state.quarantine)
+        self.assertEqual(result.state.grant, self.state.grant)
+
+
+    def test_l4_persists_across_original_refresh_and_l2_candidate(self):
+        l4 = self.call(self.state, {"scope": 5}, classifier=lambda _: 4)
+        stable = self.call(l4.state, self.A)
+        bounded = self.call(l4.state, {"scope": 2})
+        self.assertEqual(stable.status, "QUARANTINED_LOCKED")
+        self.assertEqual(bounded.status, "QUARANTINED_LOCKED")
+        self.assertEqual(stable.decision, Decision.QUARANTINE)
+        self.assertEqual(bounded.state, l4.state)
+
+    def test_l4_cannot_be_overridden_by_custom_enforcer(self):
+        result = revalidate(
+            self.state, {"scope": 4}, server_id="s", tool_id="t",
+            policy_context="p", approval_time="now",
+            classify_level=lambda _: 4, explicit_human_approval=True,
+            enforce=lambda action, approval: Decision.ALLOW_CONTINUATION,
+        )
+        self.assertEqual(result.decision, Decision.QUARANTINE)
+        self.assertIsNotNone(result.state.quarantine)
+
+    def test_l4_requires_remediation_and_explicit_reapproval(self):
+        malicious = {"scope": 5}
+        locked = self.call(self.state, malicious, classifier=lambda _: 4)
+        kwargs = dict(server_id="s", tool_id="t", policy_context="p",
+                      approval_time="new", classify_level=scope_classifier)
+        self.assertEqual(
+            recover_quarantine(locked.state, self.A,
+                               remediation_confirmed=True, **kwargs).status,
+            "QUARANTINED_LOCKED",
+        )
+        self.assertEqual(
+            recover_quarantine(locked.state, malicious,
+                               remediation_confirmed=True,
+                               explicit_human_approval=True, **kwargs).status,
+            "QUARANTINE_RECOVERY_REJECTED",
+        )
+        released = recover_quarantine(
+            locked.state, self.A, remediation_confirmed=True,
+            explicit_human_approval=True, **kwargs
+        )
+        self.assertEqual(released.status, "QUARANTINE_RELEASED")
+        self.assertIsNone(released.state.quarantine)
+        self.assertEqual(self.call(released.state, self.A).status, "STABLE_ACCEPT")
+
+    def test_policy_block_creates_persistent_quarantine(self):
+        blocked = revalidate(
+            self.state, {"scope": 2}, server_id="s", tool_id="t",
+            policy_context="p", approval_time="now",
+            classify_level=scope_classifier,
+            enforce=lambda action, approval: Decision.BLOCK,
+        )
+        self.assertEqual(blocked.status, "QUARANTINED")
+        self.assertIsNotNone(blocked.state.quarantine)
+        self.assertEqual(self.call(blocked.state, self.A).status, "QUARANTINED_LOCKED")
+
+    def test_withdrawal_revokes_quarantined_grant(self):
+        locked = self.call(self.state, {"scope": 5}, classifier=lambda _: 4)
+        withdrawn = self.call(locked.state, ABSENT)
+        self.assertEqual(withdrawn.status, "WITHDRAWN")
+        self.assertIsNone(withdrawn.state.quarantine)
+        self.assertIsNone(withdrawn.state.grant)
 
 
 if __name__ == "__main__":
