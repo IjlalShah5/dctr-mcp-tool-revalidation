@@ -104,7 +104,7 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
 
 ## Validation status
 
-The earlier Phase-12 checkpoint recorded a **25/25** offline test run. Round-2 adds new quarantine, ordinal-alpha and primary-evidence tests; this older figure is **not** presented as a current total. The workflow under `.github/workflows/reproducibility.yml` runs the expanded test suite on main. Check its current result rather than assuming success.
+The earlier Phase-12 checkpoint recorded a **25/25** offline run. The expanded Round-2 workflow subsequently passed **33/33 tests** and verified **4 primary transitions / 12 exact path-level semantic records** on 2026-10-11. [GitHub Actions verification run](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/38124648662). The workflow under `.github/workflows/reproducibility.yml` rechecks future main commits; check the latest run before citing a newer snapshot.
 
 ## Reproducibility discipline
 
