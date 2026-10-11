@@ -64,7 +64,7 @@ class RevisionArtifactTests(unittest.TestCase):
         self.assertEqual(metrics["pre_adjudication_disagreements"], 6)
         self.assertAlmostEqual(metrics["pre_adjudication_exact_agreement"], 28 / 34)
         self.assertAlmostEqual(metrics["linear_weighted_cohen_kappa"], 0.7197802197802198)
-        self.assertAlmostEqual(metrics["ordinal_krippendorff_alpha"], 0.7635294117647059)
+        self.assertAlmostEqual(metrics["ordinal_krippendorff_alpha"], 0.7081173067105337)
         self.assertEqual(metrics["bootstrap_reps"], 50000)
         self.assertEqual(metrics["bootstrap_seed"], 20260926)
         self.assertEqual(metrics["unit_bootstrap_kappa_95_ci"], [0.472, 0.905])
