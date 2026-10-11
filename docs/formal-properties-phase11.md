@@ -77,3 +77,21 @@ approval flag is supplied.
 These are properties of the reference state-update rules, conditional on correct hashing,
 differencing, classification, and atomic persistence; they are not proofs of runtime
 security.
+
+## Round-2 lifecycle refinement: persistent quarantine
+
+In the reference state, `Q_t != None` is an explicit quarantined condition,
+not merely a terminal return code. For an observed candidate, `Q_t != None`
+causes `QUARANTINED_LOCKED` before the ordinary stable-equality check; thus
+the old approved digest cannot silently restore invocation permission.
+An L4 transition stores a quarantine marker even if an injected policy
+enforcer would attempt `ALLOW_CONTINUATION`. A policy block similarly retains
+a marker. Recovery is a separate transition requiring a confirmed remediation,
+explicit administrator approval, integrity checks, and a non-L4 candidate.
+Tool withdrawal remains a revocation event.
+
+This invariant assumes the **integrating client persists the whole returned
+TrustState atomically** and rejects invocation when the marker is present.
+The research artefact does not provide a persistent client database or a
+production invocation gate; those responsibilities cannot be inferred from
+the pure `revalidate` function alone.
