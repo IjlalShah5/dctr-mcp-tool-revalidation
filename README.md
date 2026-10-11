@@ -6,6 +6,17 @@ This repository is the reproducibility artefact for the revised DCTR manuscript 
 
 The major-revision work was developed in PR #1 and the final post-review hardening in PR #2. Both revision sets are now merged into the default `main` branch so reviewers opening the repository see the complete submission artefact, including the dual-baseline integrity hardening, reliability precision diagnostics, and DCTR/Microsoft cross-tabulation.
 
+## Round-2 reviewer corrections on main
+
+The current `main` code includes round-2 corrections without creating a separate branch:
+
+- **Persistent quarantine:** `TrustState.quarantine` preserves an L4/policy-block lifecycle lock. Normal refreshes cannot resume a blocked grant; `recover_quarantine()` requires remediation confirmation and explicit human approval. Integrators must durably persist this state and deny Tool execution during quarantine.
+- **Primary evidence synchronization:** `data/transitions.csv` hashes and all P01-P04 delta paths are reconciled with the stored contracts. `data/primary_path_evidence.csv` supplies 12 exact path/TSV/rule/rationale records marked as author-coded development references.
+- **Corrected reliability statistic:** The true ordinal-distance Krippendorff alpha is **0.708117** (reported as 0.708), not 0.764. The prior result was interval-distance alpha. Primary linear-weighted kappa remains 0.720.
+- **Regression verification:** `python -m unittest discover -s tests -v` and `python scripts/verify_primary_evidence.py`. The GitHub workflow `.github/workflows/reproducibility.yml` is configured to run them on main commits.
+
+See `docs/round2-reviewer2-corrections.md`. **The journal manuscript PDF and reviewer response uploaded to SuSy must still be revised separately; repository changes do not automatically change those submissions.**
+
 ## What DCTR evaluates
 
 DCTR asks whether a prior approval remains transferable when an authenticated, client-visible Tool contract changes. The artefact separates:
@@ -75,6 +86,8 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
 - `docs/ethics-checkpoint.md` — anonymized expert-annotation governance and consent record.
 
 **Core data**
+- `data/primary_path_evidence.csv` — per-path P01–P04 evidence/TSV/rule/rationale, verified against contract JSON.
+- `data/transitions.csv` — synchronized primary hashes and exact directional path lists.
 - `data/heldout_annotation_unit_index.csv`
 - `data/heldout_annotation_final_path_units.csv`
 - `data/heldout_annotation_final_mutations.csv`
@@ -89,10 +102,9 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
   not presented as preregistration documents and should be read alongside the frozen
   codebook/protocol above.
 
-## Phase-12 validation status
+## Validation status
 
-A branch-equivalent offline run passes **25/25** unit and artefact-integrity tests,
-including the human-anchor integrity and comparison/precision artefact checks.
+The earlier Phase-12 checkpoint recorded a **25/25** offline test run. Round-2 adds new quarantine, ordinal-alpha and primary-evidence tests; this older figure is **not** presented as a current total. The workflow under `.github/workflows/reproducibility.yml` runs the expanded test suite on main. Check its current result rather than assuming success.
 
 ## Reproducibility discipline
 
