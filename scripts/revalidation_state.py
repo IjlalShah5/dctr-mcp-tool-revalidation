@@ -54,10 +54,19 @@ class Grant:
 
 
 @dataclass(frozen=True)
+class QuarantineRecord:
+    """Durable lifecycle lock; integrating clients must persist/enforce this flag."""
+
+    reason: str
+    candidate_hash: str | None
+
+
+@dataclass(frozen=True)
 class TrustState:
     operational_baseline: Any | None
     human_reviewed_baseline: Any | None
     grant: Grant | None
+    quarantine: QuarantineRecord | None = None
 
 
 @dataclass(frozen=True)
@@ -143,6 +152,15 @@ def revalidate(
             (), (), revoked, None
         )
 
+    # A quarantined grant remains inactive even if the original contract reappears.
+    # Only recover_quarantine() may explicitly clear this durable lifecycle lock.
+    if state.quarantine is not None:
+        return RevalidationResult(
+            "QUARANTINED_LOCKED", None, None, 4,
+            ReferenceAction.QUARANTINE, Decision.QUARANTINE,
+            (), (), state, _canonical_hash_or_none(advertised)
+        )
+
     candidate_hash = _canonical_hash_or_none(advertised)
     if candidate_hash is None:
         return RevalidationResult(
@@ -179,7 +197,7 @@ def revalidate(
         return RevalidationResult(
             "BASELINE_INTEGRITY_FAILURE", None, None, None,
             ReferenceAction.FAIL_CLOSED, Decision.BLOCK,
-            (), (), state, candidate_hash
+            (), (), replace(state, quarantine=QuarantineRecord("BASELINE_INTEGRITY_FAILURE", candidate_hash)), candidate_hash
         )
 
     # The cumulative human-reviewed anchor is also integrity-bound. Otherwise a
@@ -189,7 +207,7 @@ def revalidate(
         return RevalidationResult(
             "HUMAN_ANCHOR_INTEGRITY_FAILURE", None, None, None,
             ReferenceAction.FAIL_CLOSED, Decision.BLOCK,
-            (), (), state, candidate_hash
+            (), (), replace(state, quarantine=QuarantineRecord("HUMAN_ANCHOR_INTEGRITY_FAILURE", candidate_hash)), candidate_hash
         )
 
     if candidate_hash == grant.approved_hash:
@@ -241,6 +259,14 @@ def revalidate(
 
     effective_level = max(local_level, cumulative_level)
     action = reference_action(effective_level)
+    # A caller-supplied enforcer cannot override L4, even if it returns ALLOW.
+    if effective_level == 4:
+        return RevalidationResult(
+            "QUARANTINED", local_level, cumulative_level, effective_level,
+            ReferenceAction.QUARANTINE, Decision.QUARANTINE,
+            tuple(local_delta), tuple(cumulative_delta),
+            replace(state, quarantine=QuarantineRecord("L4", candidate_hash)), candidate_hash
+        )
     try:
         decision = enforce(action, explicit_human_approval)
     except Exception:
@@ -269,14 +295,16 @@ def revalidate(
         )
         new_state = TrustState(advertised, new_anchor, new_grant)
     else:
-        new_state = state
-        status = {
-            Decision.PENDING: "REVALIDATION_PENDING",
-            Decision.DENY: "REVALIDATION_DENIED",
-            Decision.QUARANTINE: "QUARANTINED",
-            Decision.BLOCK: "FAIL_CLOSED",
-            Decision.REVOKE: "WITHDRAWN",
-        }[decision]
+        if decision in {Decision.BLOCK, Decision.QUARANTINE}:
+            new_state = replace(state, quarantine=QuarantineRecord("POLICY_BLOCK", candidate_hash))
+            status = "QUARANTINED"
+        else:
+            new_state = state
+            status = {
+                Decision.PENDING: "REVALIDATION_PENDING",
+                Decision.DENY: "REVALIDATION_DENIED",
+                Decision.REVOKE: "WITHDRAWN",
+            }[decision]
 
     return RevalidationResult(
         status,
@@ -289,4 +317,71 @@ def revalidate(
         tuple(cumulative_delta),
         new_state,
         candidate_hash,
+    )
+
+
+def recover_quarantine(
+    state: TrustState,
+    remediated: Any,
+    *,
+    server_id: str,
+    tool_id: str,
+    policy_context: str,
+    approval_time: str,
+    classify_level: Callable[[list[dict[str, Any]]], int],
+    remediation_confirmed: bool = False,
+    explicit_human_approval: bool = False,
+) -> RevalidationResult:
+    """Explicit administrative recovery, never an ordinary catalogue refresh.
+
+    The caller must durably persist the new TrustState (including quarantine) and
+    prevent invocations while quarantine is set. This reference code does not
+    itself provide an external durable store or invocation-time enforcement.
+    """
+    if state.quarantine is None:
+        raise ValueError("recover_quarantine requires a quarantined state")
+
+    candidate_hash = None if remediated is ABSENT else _canonical_hash_or_none(remediated)
+
+    def locked(status: str = "QUARANTINED_LOCKED") -> RevalidationResult:
+        return RevalidationResult(
+            status, None, None, 4, ReferenceAction.QUARANTINE,
+            Decision.QUARANTINE, (), (), state, candidate_hash
+        )
+
+    if not remediation_confirmed or explicit_human_approval is not True:
+        return locked()
+    if candidate_hash is None or candidate_hash == state.quarantine.candidate_hash:
+        return locked("QUARANTINE_RECOVERY_REJECTED")
+    grant, operational, anchor = state.grant, state.operational_baseline, state.human_reviewed_baseline
+    if grant is None or operational is None or anchor is None:
+        return locked("QUARANTINE_RECOVERY_REJECTED")
+    if grant.server_id != server_id or grant.tool_id != tool_id:
+        return locked("QUARANTINE_RECOVERY_REJECTED")
+    if (_canonical_hash_or_none(operational) != grant.approved_hash
+            or _canonical_hash_or_none(anchor) != grant.human_reviewed_hash):
+        return locked("QUARANTINE_RECOVERY_REJECTED")
+    try:
+        local_delta = recursive_diff(operational, remediated)
+        cumulative_delta = recursive_diff(anchor, remediated)
+        if (candidate_hash != grant.approved_hash and not local_delta) or (
+            candidate_hash != grant.human_reviewed_hash and not cumulative_delta
+        ):
+            return locked("QUARANTINE_RECOVERY_REJECTED")
+        local_level = _level(classify_level(local_delta)) if local_delta else 0
+        cumulative_level = _level(classify_level(cumulative_delta)) if cumulative_delta else 0
+    except Exception:
+        return locked("QUARANTINE_RECOVERY_REJECTED")
+    effective_level = max(local_level, cumulative_level)
+    if effective_level == 4:
+        return locked("QUARANTINE_RECOVERY_REJECTED")
+    new_grant = replace(
+        grant, approved_hash=candidate_hash, human_reviewed_hash=candidate_hash,
+        policy_context=policy_context, approval_time=approval_time,
+    )
+    return RevalidationResult(
+        "QUARANTINE_RELEASED", local_level, cumulative_level, effective_level,
+        reference_action(effective_level), Decision.ALLOW_CONTINUATION,
+        tuple(local_delta), tuple(cumulative_delta),
+        TrustState(remediated, remediated, new_grant), candidate_hash
     )
