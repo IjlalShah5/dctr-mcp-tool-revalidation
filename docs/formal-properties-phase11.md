@@ -95,3 +95,7 @@ TrustState atomically** and rejects invocation when the marker is present.
 The research artefact does not provide a persistent client database or a
 production invocation gate; those responsibilities cannot be inferred from
 the pure `revalidate` function alone.
+
+## Fail-closed incomplete approval state (round-2 final hardening)
+
+`INITIAL_TRUST` applies only if the operational baseline, human-reviewed anchor and grant are **all** missing. If any approval component is retained while another is missing, `revalidate()` instead returns `BASELINE_MISSING` with `Decision.BLOCK` and a persisted quarantine record. This prevents a corrupt or partially restored approval record from masquerading as fresh initial trust. Withdrawal revokes all components and any quarantine marker. Test coverage includes three incomplete component patterns, ordinary first observation without approval, and withdrawal from an incomplete blocked state. As elsewhere, clients must durably persist the returned state and block invocation while quarantined.
