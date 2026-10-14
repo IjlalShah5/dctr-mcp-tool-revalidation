@@ -86,3 +86,7 @@ Section 4.5, Algorithm 2, and the deployment discussion. Describe the
 new public primary evidence table and completeness script in Section 4.11.
 Retain the narrow approval-continuity framing and the limitation that only
 one held-out natural L3 path and no L4 paths were observed.
+
+## 14 October 2026 — additional fail-closed review finding
+
+A post-revision state-machine audit found that a partial approval record (one or more retained grant/baseline components, but another component missing) was mistakenly routed to `INITIAL_TRUST` by the earlier `or` test. This does not automatically issue an `ALLOW` grant, but violates the manuscript's intended fail-closed handling of missing approved baselines. The corrected code now distinguishes (i) all three grant and anchors absent → `INITIAL_TRUST`, from (ii) any incomplete existing approval state → `BASELINE_MISSING` / `BLOCK` with persisted quarantine. New regression tests check missing operational baseline, missing human-reviewed anchor, missing grant with retained baselines, unchanged legitimate initial trust, and revocation on withdrawal. The GitHub Actions verification run **38502489325** passed **38/38** tests and independently verified **4 primary transitions / 12 path records**. The corresponding Algorithm 2 and Table 12 manuscript text must distinguish the same states; figure nodes and original topology do not need modification.
