@@ -124,6 +124,43 @@ class DualBaselineTests(unittest.TestCase):
         self.assertIsNone(reintroduced.state.operational_baseline)
 
 
+    def test_new_untrusted_state_still_requires_initial_approval(self):
+        fresh = TrustState(None, None, None)
+        result = self.call(fresh, {"scope": 1})
+        self.assertEqual(result.status, "INITIAL_TRUST")
+        self.assertIsNone(result.decision)
+        self.assertEqual(result.state, fresh)
+
+    def test_missing_operational_baseline_with_active_grant_fails_closed(self):
+        inconsistent = TrustState(None, self.A, self.grant)
+        blocked = self.call(inconsistent, self.A)
+        self.assertEqual(blocked.status, "BASELINE_MISSING")
+        self.assertEqual(blocked.action, ReferenceAction.FAIL_CLOSED)
+        self.assertEqual(blocked.decision, Decision.BLOCK)
+        self.assertIsNotNone(blocked.state.quarantine)
+        self.assertEqual(self.call(blocked.state, self.A).status, "QUARANTINED_LOCKED")
+
+    def test_missing_human_anchor_with_active_grant_fails_closed(self):
+        inconsistent = TrustState(self.A, None, self.grant)
+        blocked = self.call(inconsistent, self.A)
+        self.assertEqual(blocked.status, "BASELINE_MISSING")
+        self.assertEqual(blocked.decision, Decision.BLOCK)
+        self.assertIsNotNone(blocked.state.quarantine)
+
+    def test_missing_grant_with_retained_baselines_fails_closed(self):
+        inconsistent = TrustState(self.A, self.A, None)
+        blocked = self.call(inconsistent, self.A)
+        self.assertEqual(blocked.status, "BASELINE_MISSING")
+        self.assertEqual(blocked.decision, Decision.BLOCK)
+        self.assertIsNotNone(blocked.state.quarantine)
+
+    def test_missing_baseline_withdrawal_revokes_inconsistent_state(self):
+        inconsistent = TrustState(None, self.A, self.grant)
+        blocked = self.call(inconsistent, self.A)
+        withdrawn = self.call(blocked.state, ABSENT)
+        self.assertEqual(withdrawn.status, "WITHDRAWN")
+        self.assertEqual(withdrawn.state, TrustState(None, None, None))
+
     def test_human_anchor_integrity_failure_fails_closed(self):
         corrupted_anchor = {"scope": 99}
         state = TrustState(self.A, corrupted_anchor, self.grant)
