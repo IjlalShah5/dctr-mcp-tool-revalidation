@@ -10,6 +10,7 @@ The major-revision work was developed in PR #1 and the final post-review hardeni
 
 The current `main` code includes round-2 corrections without creating a separate branch:
 
+- **Missing-baseline fail-closed handling (14 October 2026):** A genuinely new Tool has no grant and neither anchor; only this fully absent state takes `INITIAL_TRUST`. A partially missing approval state instead returns `BASELINE_MISSING` / `BLOCK` with a persisted quarantine marker. Five additional regression tests verify this distinction.
 - **Persistent quarantine:** `TrustState.quarantine` preserves an L4/policy-block lifecycle lock. Normal refreshes cannot resume a blocked grant; `recover_quarantine()` requires remediation confirmation and explicit human approval. Integrators must durably persist this state and deny Tool execution during quarantine.
 - **Primary evidence synchronization:** `data/transitions.csv` hashes and all P01-P04 delta paths are reconciled with the stored contracts. `data/primary_path_evidence.csv` supplies 12 exact path/TSV/rule/rationale records marked as author-coded development references.
 - **Corrected reliability statistic:** The true ordinal-distance Krippendorff alpha is **0.708117** (reported as 0.708), not 0.764. The prior result was interval-distance alpha. Primary linear-weighted kappa remains 0.720.
@@ -104,7 +105,7 @@ A three-case controlled subset is retained for Playwright screenshot scale, Play
 
 ## Validation status
 
-The earlier Phase-12 checkpoint recorded a **25/25** offline run. The expanded Round-2 workflow subsequently passed **33/33 tests** and verified **4 primary transitions / 12 exact path-level semantic records** on 2026-10-11. [GitHub Actions verification run](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/38124648662). The workflow under `.github/workflows/reproducibility.yml` rechecks future main commits; check the latest run before citing a newer snapshot.
+The earlier Phase-12 checkpoint recorded a **25/25** offline run. The expanded Round-2 workflow subsequently passed **38/38 tests** and verified **4 primary transitions / 12 exact path-level semantic records** on 2026-10-14. [GitHub Actions verification run](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/38502489325). The workflow under `.github/workflows/reproducibility.yml` rechecks future main commits; check the latest run before citing a newer snapshot.
 
 ## Reproducibility discipline
 
