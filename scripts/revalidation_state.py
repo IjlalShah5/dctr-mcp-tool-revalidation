@@ -169,12 +169,19 @@ def revalidate(
             (), (), state, None
         )
 
-    # Initial trust is intentionally separate from revalidation; this function does not
-    # silently establish a grant for a newly observed or reintroduced Tool.
-    if operational is None or anchor is None or grant is None:
+    # Only an entirely empty, untrusted state is eligible for INITIAL_TRUST.
+    # A partially missing grant/baseline is corrupt approval state, not new trust.
+    if operational is None and anchor is None and grant is None:
         return RevalidationResult(
             "INITIAL_TRUST", None, None, None, None, None,
             (), (), state, candidate_hash
+        )
+    if operational is None or anchor is None or grant is None:
+        return RevalidationResult(
+            "BASELINE_MISSING", None, None, None,
+            ReferenceAction.FAIL_CLOSED, Decision.BLOCK,
+            (), (), replace(state, quarantine=QuarantineRecord("BASELINE_MISSING", candidate_hash)),
+            candidate_hash
         )
 
     if grant.server_id != server_id or grant.tool_id != tool_id:
