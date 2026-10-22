@@ -21,5 +21,7 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Verify Round 3 anonymized pilot statistics
         run: python scripts/verify_round3_public_pilot.py
+      - name: Verify unlabelled Round 3 natural-candidate snapshot reconstruction
+        run: python scripts/verify_round3_natural_candidates.py
       - name: Verify primary hashes, paths, TSV and composition
         run: python scripts/verify_primary_evidence.py
