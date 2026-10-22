@@ -24,13 +24,14 @@ def contract() -> dict:
 
 @server.list_tools()
 async def handle_list_tools() -> list[types.Tool]:
-    return [types.Tool(**contract())]
+    candidate = contract()
+    return [types.Tool(**candidate)] if candidate is not None else []
 
 
 @server.call_tool()
 async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent]:
     current = contract()
-    if name != current["name"]:
+    if current is None or name != current["name"]:
         raise ValueError("wrong Tool identity")
     path = Path(os.environ["DCTR_SDK_INVOCATION_FILE"])
     with path.open("a", encoding="utf-8") as f:
