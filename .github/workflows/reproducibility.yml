@@ -15,6 +15,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install pinned official MCP Python SDK v1 for integration tests
+        run: python -m pip install 'mcp==1.28.0'
       - name: Run repository tests
         run: python -m unittest discover -s tests -v
       - name: Verify Round 3 anonymized pilot statistics
