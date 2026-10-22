@@ -21,3 +21,17 @@ jobs:
         run: python scripts/verify_round3_public_pilot.py
       - name: Verify primary hashes, paths, TSV and composition
         run: python scripts/verify_primary_evidence.py
+
+  official-mcp-sdk-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install official MCP Python SDK pinned for test
+        run: python -m pip install 'mcp==1.30.0'
+      - name: Exercise DCTR via real SDK ClientSession and subprocess stdio server
+        run: python -m unittest discover -s tests -p 'sdk_*.py' -v
