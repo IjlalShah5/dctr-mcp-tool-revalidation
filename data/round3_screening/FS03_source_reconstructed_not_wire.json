@@ -1,0 +1,37 @@
+{
+  "source_case_id": "FS03",
+  "derivation": "STATIC_MANUAL_TOOLS_LIST_SOURCE_LITERAL_PROJECTION_NOT_RUNTIME_WIRE",
+  "repository": "modelcontextprotocol/servers",
+  "source_file": "src/filesystem/index.ts",
+  "before_commit": "c5fec2935a273f265ba236cdc5fed158a50ce556",
+  "after_commit": "7e1d9d9edee441e038698bfa6ac5bbb85b64320c",
+  "before_tool": {
+    "name": "list_allowed_directories",
+    "description": "Returns the list of root directories that this server is allowed to access. Use this to understand which directories are available before trying to access files. ",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "after_tool": {
+    "name": "list_allowed_directories",
+    "description": "Returns the list of directories that this server is allowed to access. Subdirectories within these allowed directories are also accessible. Use this to understand which directories and their nested paths are available before trying to access files.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "before_jcs_sha256": "1c59edd6170b31f11faf16a97a68bc1c5dc7d22c9dd4678d15badb03193220e0",
+  "after_jcs_sha256": "4e77765f663c2826afc2566bf75e28a993d9d2be8f349b2feb24bc2c4c145c6c",
+  "changed_paths": [
+    "/description"
+  ],
+  "limitations": [
+    "source-code-derived, not a captured tools/list response",
+    "no independent expert severity labels",
+    "single maintainer event, not a new reliability cohort",
+    "no evidence of runtime behavior change"
+  ]
+}
