@@ -23,5 +23,7 @@ jobs:
         run: python scripts/verify_round3_public_pilot.py
       - name: Verify unlabelled Round 3 natural-candidate snapshot reconstruction
         run: python scripts/verify_round3_natural_candidates.py
+      - name: Verify blinded Stage3N annotator A/B packets contain identical evidence and no labels
+        run: python scripts/verify_round3_natural_packets.py
       - name: Verify primary hashes, paths, TSV and composition
         run: python scripts/verify_primary_evidence.py
