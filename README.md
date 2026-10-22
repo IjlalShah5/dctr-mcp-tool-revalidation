@@ -6,6 +6,12 @@ This repository is the reproducibility artefact for the revised DCTR manuscript 
 
 The major-revision work was developed in PR #1 and the final post-review hardening in PR #2. Both revision sets are now merged into the default `main` branch so reviewers opening the repository see the complete submission artefact, including the dual-baseline integrity hardening, reliability precision diagnostics, and DCTR/Microsoft cross-tabulation.
 
+## Round-3 extension — official MCP SDK integration (22 October 2026)
+
+A second controlled integration step uses the **official MCP Python SDK `mcp==1.30.0`** with a real `ClientSession`, separate stdio subprocess server, `tools/list`/`tools/call`, SQLite grant persistence and per-invocation DCTR approval gating. Its **8 SDK-specific tests** pass in a dedicated CI job. The original dependency-free suite also adds two safe controlled tests for a *measurable local compound-effect witness*: two individually bounded test fields create a new combined action while max-path remains L2, and an experimental guard escalates uncertainty to L3 and prevents invocation. Across the two jobs, **58+8=66 tests** pass in the branch CI snapshot. See [the official-SDK addendum](docs/round3-official-sdk-addendum.md) for test design and limitations.
+
+Separately, a [multi-repository natural-change screening register](data/round3_screening/natural_candidate_screening_20261022.csv) records source-linked *candidate* commits across filesystem, Chrome DevTools and Firecrawl MCP servers. **These are not yet eligible fully reconstructed Tool-contract transitions and have no independent human severity labels.** Do not add them to the historical, supplementary, or independent pilot denominators. The next separate 24-fixture controlled boundary study has prepared blinded materials but **no human ratings yet**.
+
 ## Round-2 reviewer corrections on main
 
 The current `main` code includes round-2 corrections without creating a separate branch:
