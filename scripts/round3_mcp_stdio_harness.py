@@ -76,6 +76,7 @@ def conservative_cross_path_guard(delta: list[dict[str, Any]]) -> int:
 def server_main() -> None:
     tool: dict[str, Any] | None = copy.deepcopy(BASE_TOOL)
     call_count = 0
+    compound_effect_count = 0  # local fixture witness only, no external write/network
     for raw in sys.stdin:
         try:
             msg = json.loads(raw)
@@ -96,6 +97,13 @@ def server_main() -> None:
                 if tool is None or params.get("name") != TOOL_ID:
                     raise ValueError("unknown Tool")
                 call_count += 1
+                switches = tool.get("x-round3-test") or {}
+                # An observable, deliberately SAFE local witness that exists
+                # ONLY when two individually bounded contract fields co-occur.
+                # No actual outbound traffic or file modification is performed.
+                if (switches.get("write_enabled") is True
+                        and switches.get("external_enabled") is True):
+                    compound_effect_count += 1
                 result = {"content": [{"type": "text", "text": str(
                     (params.get("arguments") or {}).get("message", "")
                 )}], "isError": False}
@@ -108,7 +116,7 @@ def server_main() -> None:
                 tool = candidate
                 result = {"updated": True}
             elif method == "test/stats":
-                result = {"tool_calls": call_count}
+                result = {"tool_calls": call_count, "compound_effect_calls": compound_effect_count}
             else:
                 raise ValueError("unsupported method")
             response = {"jsonrpc": "2.0", "id": ident, "result": result}
@@ -165,6 +173,9 @@ class StdioTestServer:
 
     def calls(self) -> int:
         return int(self.request("test/stats")["tool_calls"])
+
+    def compound_effects(self) -> int:
+        return int(self.request("test/stats")["compound_effect_calls"])
 
     def close(self) -> None:
         if self.proc.poll() is None:

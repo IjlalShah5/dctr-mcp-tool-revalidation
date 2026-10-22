@@ -247,6 +247,12 @@ class Round3MCPStdioIntegration(unittest.TestCase):
         self.assertEqual(outcome.decision, Decision.ALLOW_CONTINUATION)
         self.assertEqual(self.client.store.load().operational_baseline[
             "x-round3-test"]["external_enabled"], True)
+        # The server executes a harmless synthetic conjunction witness.
+        self.assertEqual(self.server.compound_effects(), 0)
+        self.assertEqual(
+            self.client.call("controlled-conjunction")["isError"], False
+        )
+        self.assertEqual(self.server.compound_effects(), 1)
 
     def test_18_experimental_cross_path_guard_escalates_uncertainty(self):
         self.approve()
@@ -262,6 +268,31 @@ class Round3MCPStdioIntegration(unittest.TestCase):
         self.assertEqual(outcome.decision, Decision.PENDING)
         self.assertEqual(self.client.store.load(), old)
         self.assert_blocked()
+        self.assertEqual(self.server.compound_effects(), 0)
+
+    def test_19_each_individual_switch_has_no_compound_witness(self):
+        self.approve()
+        self.mutate(write_enabled=True)
+        self.assertEqual(self.client.refresh().effective_level, 2)
+        self.client.call("write-only")
+        self.assertEqual(self.server.compound_effects(), 0)
+        self.mutate(external_enabled=True)
+        self.assertEqual(self.client.refresh().effective_level, 2)
+        self.client.call("external-only")
+        self.assertEqual(self.server.compound_effects(), 0)
+
+    def test_20_compound_witness_requires_both_switches_at_invocation(self):
+        self.approve()
+        self.mutate(write_enabled=True, external_enabled=True)
+        result = self.client.refresh()
+        self.assertEqual(result.decision, Decision.ALLOW_CONTINUATION)
+        self.client.call("one")
+        self.client.call("two")
+        self.assertEqual(self.server.compound_effects(), 2)
+        self.mutate(write_enabled=True, external_enabled=False)
+        self.assertEqual(self.client.refresh().effective_level, 2)
+        self.client.call("one-flag-disabled")
+        self.assertEqual(self.server.compound_effects(), 2)
 
 
 if __name__ == "__main__":
