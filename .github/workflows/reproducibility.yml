@@ -2,7 +2,7 @@ name: DCTR reproducibility checks
 
 on:
   push:
-    branches: [main, 'round3/**']
+    branches: [main, 'round3/**', 'round4/**']
   workflow_dispatch:
 
 jobs:
