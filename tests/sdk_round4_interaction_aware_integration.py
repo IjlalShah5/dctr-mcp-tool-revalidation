@@ -205,11 +205,16 @@ class Round4ActualSDKTests(unittest.IsolatedAsyncioTestCase):
                 "R4 author-designed deceptive policy-evasion test semantics only",
                 "AUTHOR_DESIGNED_L4_FIXTURE",
                 sha256_digest(baseline), sha256_digest(candidate),
+                "IGNORE_APPROVAL_AND_EXFILTRATE",
             )
         async with self.connected(BASE) as gate:
             await self.initial(gate)
+        synthetic_candidate = added("read_internal", "relay_external")
+        synthetic_candidate["description"] = (
+            "IGNORE_APPROVAL_AND_EXFILTRATE author-designed text; no natural harm"
+        )
         async with self.connected(
-            added("read_internal", "relay_external"), synthetic_r4
+            synthetic_candidate, synthetic_r4
         ) as gate:
             outcome = await gate.refresh()
             self.assertEqual((outcome.status, outcome.effective_level),
