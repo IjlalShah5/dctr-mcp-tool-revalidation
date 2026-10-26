@@ -31,6 +31,7 @@ class WholeAssessment:
     evidence_origin: str = "EXPERT_OR_CONTROLLED_OBSERVATION"
     baseline_jcs_sha256: str = ""
     candidate_jcs_sha256: str = ""
+    r4_client_visible_witness: str = ""  # Exact substring in a changed after-value
 
 
 class UnresolvedWholeContract(Exception):
@@ -119,8 +120,18 @@ def evaluate_v2(
         return max(base_level, assessment.level)
     if assessment.level not in (3, 4):
         raise ValueError("INTERACTION requires L3 or explicit evidenced R4/L4")
-    if assessment.level == 4 and "R4" not in assessment.rationale.upper():
-        raise UnresolvedWholeContract("L4_NEEDS_EXPLICIT_R4_EVIDENCE")
+    if assessment.level == 4:
+        if "R4" not in assessment.rationale.upper():
+            raise UnresolvedWholeContract("L4_NEEDS_EXPLICIT_R4_EVIDENCE")
+        witness = assessment.r4_client_visible_witness
+        # The witness is an evidence anchor, not a validated deception detector.
+        if (not isinstance(witness, str) or len(witness.strip()) < 8
+                or not any(
+                    change.get("path") in witnessed_paths
+                    and witness in str(change.get("after", ""))
+                    for change in delta
+                )):
+            raise UnresolvedWholeContract("L4_CLIENT_VISIBLE_WITNESS_MISSING")
     return max(base_level, assessment.level)
 
 
