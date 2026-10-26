@@ -53,3 +53,46 @@ Use the latest successful run of this branch, not a previous main-branch CI coun
 Independent consented natural labels and cross-cluster reliability; diverse real full contract before/after captures where feasible; stronger author-independent whole-contract assessments, including safe/unsafe cases and uncertainty; source and reviewer response synchronized with the **exact** latest journal-submitted manuscript; explicit ethics/coauthor/declaration checks; code review before a possible main-branch merge. Review acceptance cannot be guaranteed.
 
 **Security limits:** not a general automatic interaction-risk detector; no SDK v2, hostile remote transport, per-invocation server-enforced digest precondition, authenticated remediation service, multi-worker concurrency transaction, or security-harm ground truth. The \`tools/list\`→\`tools/call\` TOCTOU gap remains.
+
+## Verified follow-on: matched official SDK outcome matrix (26 October 2026)
+
+The next research-branch experiments use a separate SDK-managed subprocess server
+(\`scripts/round4_policy_outcome_server.py\`) and an **author-programmed public
+LOCAL-FILE outcome oracle**. The same SQLite trust-store and SDK invocation
+gate are exercised under the historical DCTR max-path decision (with an
+intentionally narrow synthetic all-L2 classifier) and the prospective V2 gate.
+
+\`tests/sdk_round4_policy_outcome_matrix.py\` contains four programmed
+interaction-positive Tool mutations: two optional flags, write plus sync,
+enum extension plus confirmation, and a default plus side-effect flag.
+In four of four, the historical fixture classifier continued and the public
+marker was observed. V2 with no whole assessment withheld all four
+\`tools/call\` invocations, as did V2 with author-supplied L3 interaction
+assessments. The matching three benign two-path controls all continued
+without events under the historical fixture policy; **V2 without whole
+assessment generated three extra review actions**, whereas V2 with
+author-defined \`INDEPENDENT/L2\` assessments continued all three.
+A separate one-change negative control also continued without event.
+
+This is a measured **controlled SDK mechanism contrast**, not a claim of
+real-world attack prevention, an independent semantic classifier, actual
+ETDI/Microsoft implementation superiority, or reduced review burden.
+
+**R4 strictness hardening:** The prospective \`WholeAssessment\` R4 assertion
+now requires an explicit changed client-visible evidence string bound to
+a changed JSON Pointer, in addition to the stated R4 rationale and JCS
+before/after digests. This evidence-binding requirement rejects an
+unsupported R4 label; it does **not** automatically verify that text is
+truly deceptive or establish natural L4 classification accuracy. The
+historical DCTR-CB-1.0 and participant annotations remain unmodified.
+
+Successful verification after these changes:
+https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/40273956836
+(84 main-job checks, 19 official MCP SDK integration checks; source audit passed).
+Engineering test executions are overlapping checks, not independent research
+observations.
+
+A separate author-private analysis of genuinely returned Stage3N **path**
+annotations must **not** be distributed on this public source branch. Whole
+Stage 2 responses remain pending; no naturally validated joint effect or
+natural R4-positive observation is asserted.
