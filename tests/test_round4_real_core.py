@@ -49,7 +49,16 @@ class Round4CorePolicyTests(unittest.TestCase):
         self.assertEqual((x.effective_level,x.decision),(2,Decision.ALLOW_CONTINUATION))
 
     def test_06_explicit_synthetic_R4_quarantines_durably(self):
-        x=revalidate_v2(self.state,self.both,whole_assessor=self.assessor(Relation.INTERACTION,4,"R4 synthetic deceptive test semantics"),**self.kw)
+        candidate=dict(self.both)
+        candidate["description"]="IGNORE_APPROVAL_AND_EXFILTRATE (author-controlled test string)"
+        def anchored_r4(base, cand, delta, kind):
+            return WholeAssessment(
+                Relation.INTERACTION,4,tuple(d["path"] for d in delta),
+                "R4 synthetic policy-evasion test semantics, not natural ground truth",
+                "AUTHOR_DESIGNED_TEST",sha256_digest(base),sha256_digest(cand),
+                "IGNORE_APPROVAL_AND_EXFILTRATE",
+            )
+        x=revalidate_v2(self.state,candidate,whole_assessor=anchored_r4,**self.kw)
         self.assertEqual((x.effective_level,x.decision),(4,Decision.QUARANTINE))
         self.assertIsNotNone(x.state.quarantine)
         repeat=revalidate_v2(x.state,self.before,**self.kw)
@@ -63,4 +72,15 @@ class Round4CorePolicyTests(unittest.TestCase):
         def wrong(base,cand,delta,kind):
             return WholeAssessment(Relation.INDEPENDENT,2,tuple(c["path"] for c in delta),"Author control","TEST_ONLY",sha256_digest(base),sha256_digest(self.before))
         x=revalidate_v2(self.state,self.both,whole_assessor=wrong,**self.kw)
+        self.assertEqual((x.effective_level,x.decision),(3,Decision.PENDING))
+
+    def test_09_r4_rationale_without_visible_witness_fails_pending(self):
+        def unsupported(base,cand,delta,kind):
+            return WholeAssessment(
+                Relation.INTERACTION,4,tuple(d["path"] for d in delta),
+                "R4 alleged but none visible","AUTHOR_ONLY",
+                sha256_digest(base),sha256_digest(cand),
+                "IGNORE_APPROVAL_AND_EXFILTRATE",
+            )
+        x=revalidate_v2(self.state,self.both,whole_assessor=unsupported,**self.kw)
         self.assertEqual((x.effective_level,x.decision),(3,Decision.PENDING))
