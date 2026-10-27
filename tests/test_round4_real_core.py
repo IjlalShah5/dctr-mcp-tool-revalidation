@@ -97,13 +97,16 @@ class Round4CorePolicyTests(unittest.TestCase):
         self.assertEqual((x.effective_level,x.decision),(2,Decision.ALLOW_CONTINUATION))
 
     def test_11_bounded_interaction_cannot_smuggle_L3_level(self):
-        with self.assertRaises(ValueError):
-            revalidate_v2(
-                self.state,self.both,
-                whole_assessor=self.assessor(
-                    Relation.BOUNDED_INTERACTION,3,"Inconsistent relation and severity"
-                ),**self.kw
-            )
+        outcome=revalidate_v2(
+            self.state,self.both,
+            whole_assessor=self.assessor(
+                Relation.BOUNDED_INTERACTION,3,"Inconsistent relation and severity"
+            ),**self.kw
+        )
+        # Reference engine catches assessor ValueError and fails closed.
+        self.assertEqual((outcome.status,outcome.decision),
+                         ("POLICY_ENGINE_FAILURE",Decision.BLOCK))
+        self.assertEqual(outcome.state,self.state)
 
     def test_12_missing_bounded_interaction_assessment_still_pends(self):
         x=revalidate_v2(self.state,self.both,**self.kw)
