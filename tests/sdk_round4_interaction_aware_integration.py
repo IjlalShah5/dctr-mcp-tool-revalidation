@@ -242,7 +242,7 @@ class Round4ActualSDKTests(unittest.IsolatedAsyncioTestCase):
         ) as gate:
             outcome = await gate.refresh()
             self.assertEqual((outcome.effective_level, outcome.status),
-                             (2, "CONTINUATION_ALLOWED"))
+                             (2, "POLICY_AUTHORISED_CONTINUATION"))
             response = await gate.call({"message": "bounded relationship"})
             self.assertFalse(response.isError)
         self.assertEqual(self.call_count(), 1)
