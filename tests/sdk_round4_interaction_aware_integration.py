@@ -224,3 +224,26 @@ class Round4ActualSDKTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual((await gate.refresh()).status, "QUARANTINED_LOCKED")
             await self.blocked(gate, {"message": "blocked"})
         self.assertFalse(self.sink.exists())
+
+    async def test_09_evidenced_bounded_material_relation_L2_allows_sdk_call(self):
+        def bounded(base,candidate,delta,kind):
+            return WholeAssessment(
+                Relation.BOUNDED_INTERACTION, 2,
+                tuple(d["path"] for d in delta),
+                "Author-controlled pair of related optional local controls: "
+                "material relationship but no high-severity approval expansion",
+                "AUTHOR_DESIGNED_BOUNDARY_CONTROL",
+                sha256_digest(base), sha256_digest(candidate),
+            )
+        async with self.connected(BASE) as gate:
+            await self.initial(gate)
+        async with self.connected(
+            added("verbose", "debug_label"), bounded
+        ) as gate:
+            outcome = await gate.refresh()
+            self.assertEqual((outcome.effective_level, outcome.status),
+                             (2, "CONTINUATION_ALLOWED"))
+            response = await gate.call({"message": "bounded relationship"})
+            self.assertFalse(response.isError)
+        self.assertEqual(self.call_count(), 1)
+        self.assertFalse(self.sink.exists())
