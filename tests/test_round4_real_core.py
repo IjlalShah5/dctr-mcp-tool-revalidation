@@ -84,3 +84,27 @@ class Round4CorePolicyTests(unittest.TestCase):
             )
         x=revalidate_v2(self.state,self.both,whole_assessor=unsupported,**self.kw)
         self.assertEqual((x.effective_level,x.decision),(3,Decision.PENDING))
+
+    def test_10_holistically_bounded_material_interaction_can_remain_L2(self):
+        x=revalidate_v2(
+            self.state,self.both,
+            whole_assessor=self.assessor(
+                Relation.BOUNDED_INTERACTION,2,
+                "Two schema switches interact in an author-controlled fixture, "
+                "but no higher approval-basis severity is evidenced",
+            ),**self.kw
+        )
+        self.assertEqual((x.effective_level,x.decision),(2,Decision.ALLOW_CONTINUATION))
+
+    def test_11_bounded_interaction_cannot_smuggle_L3_level(self):
+        with self.assertRaises(ValueError):
+            revalidate_v2(
+                self.state,self.both,
+                whole_assessor=self.assessor(
+                    Relation.BOUNDED_INTERACTION,3,"Inconsistent relation and severity"
+                ),**self.kw
+            )
+
+    def test_12_missing_bounded_interaction_assessment_still_pends(self):
+        x=revalidate_v2(self.state,self.both,**self.kw)
+        self.assertEqual((x.effective_level,x.decision),(3,Decision.PENDING))
