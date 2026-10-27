@@ -18,7 +18,8 @@ POLICY_VERSION = "DCTR-IA-2.0-EXPERIMENTAL"
 
 class Relation(str, Enum):
     INDEPENDENT = "INDEPENDENT"
-    INTERACTION = "INTERACTION"
+    BOUNDED_INTERACTION = "BOUNDED_INTERACTION"  # related effects, no higher approval action evidenced
+    INTERACTION = "INTERACTION"  # material escalation requiring L3+
     UNCERTAIN = "UNCERTAIN"
 
 
@@ -117,6 +118,12 @@ def evaluate_v2(
     if relation is Relation.INDEPENDENT:
         if assessment.level not in (0, 1, 2):
             raise ValueError("INDEPENDENT assessment cannot claim L3/L4")
+        return max(base_level, assessment.level)
+    if relation is Relation.BOUNDED_INTERACTION:
+        if assessment.level not in (0, 1, 2):
+            raise ValueError("BOUNDED_INTERACTION cannot claim L3/L4")
+        if len(witnessed_paths) < 2:
+            raise ValueError("BOUNDED_INTERACTION requires multiple evidenced changed paths")
         return max(base_level, assessment.level)
     if assessment.level not in (3, 4):
         raise ValueError("INTERACTION requires L3 or explicit evidenced R4/L4")
