@@ -2,13 +2,19 @@
 
 This repository is the reproducibility artefact for the revised DCTR manuscript on approval continuity for evolving Model Context Protocol (MCP) Tools.
 
+## Current Round-4 reproducibility status (29 October 2026)
+
+DCTR-IA-2.0 is now implemented on **`main`** following [merged PR #8](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/pull/8). The initial merge commit `ce25966a67c92638c64bcdca780022bfd0fe8534` passed [main-branch CI #40960388584](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/40960388584): **87 primary tests and 20 official MCP SDK tests passed**, and the upstream immutable-source audit succeeded. Later documentation-only commits must be checked against their own CI before treating their heads as tested. The version identifier in `scripts/interaction_v2.py` is explicitly experimental; no `v2.0` Git tag or production guarantee is asserted. See [Round-4 interaction-aware evidence](docs/round4-interaction-aware-sdk-evidence.md).
+
+**Evidence scope:** the N2 natural 20-contract/43-path replay establishes structural triggering only; independently frozen N3 and Study B annotator returns were verified by the authors off-repository and are not part of the 87+20 engineering CI; the S1 synthetic human-rating totals were withdrawn from the revised paper. Neither controlled test outcomes nor the source-snapshot replay establish real-world harmful-interaction detection, natural L4 prevalence or reduced unnecessary approvals. Keep participant records private pending ethics/consent approval.
+
 ## Revision status
 
 The major-revision work was developed in PR #1 and the final post-review hardening in PR #2. Both revision sets are now merged into the default `main` branch so reviewers opening the repository see the complete submission artefact, including the dual-baseline integrity hardening, reliability precision diagnostics, and DCTR/Microsoft cross-tabulation.
 
 ## Round-3 extension — official MCP SDK integration (22 October 2026)
 
-A second controlled integration step uses the **official MCP Python SDK `mcp==1.30.0`** with a real `ClientSession`, separate stdio subprocess server, `tools/list`/`tools/call`, SQLite grant persistence and per-invocation DCTR approval gating. Its **8 SDK-specific tests** pass in a dedicated CI job. The original dependency-free suite also adds two safe controlled tests for a *measurable local compound-effect witness*: two individually bounded test fields create a new combined action while max-path remains L2, and an experimental guard escalates uncertainty to L3 and prevents invocation. The former 58-test checkpoint remains historically valid; the current verification job additionally collects **15 separate official SDK 1.28.0 tests**, making **73** in that job (38 original + 20 controlled stdio + 15 SDK 1.28.0) and **8** under SDK 1.30.0 in its own job: **81 test executions across two dependency environments**. These are overlapping controlled engineering checks, not 81 independent research cases. See [the official-SDK addendum](docs/round3-official-sdk-addendum.md) for test design and limitations.
+A second controlled integration step uses the **official MCP Python SDK `mcp==1.30.0`** with a real `ClientSession`, separate stdio subprocess server, `tools/list`/`tools/call`, SQLite grant persistence and per-invocation DCTR approval gating. Its **8 SDK-specific tests** pass in a dedicated CI job. The original dependency-free suite also adds two safe controlled tests for a *measurable local compound-effect witness*: two individually bounded test fields create a new combined action while max-path remains L2, and an experimental guard escalates uncertainty to L3 and prevents invocation. The former 58-test checkpoint remains historically valid; the then-current Round-3 verification job additionally collected **15 separate official SDK 1.28.0 tests**, making **73** in that job (38 original + 20 controlled stdio + 15 SDK 1.28.0) and **8** under SDK 1.30.0 in its own job: **81 test executions across two dependency environments**. These are overlapping controlled engineering checks, not 81 independent research cases. See [the official-SDK addendum](docs/round3-official-sdk-addendum.md) for test design and limitations.
 
 The [immutable-source provenance audit](docs/round3-multi-repository-evidence-scope.md) additionally verifies seven source-literal maintainer events from three repositories. These are not complete runtime Tool captures and have no human L0–L4 labels. The distinct 20-Tool, 43-path, 14-cluster Stage3N source-snapshot cohort is also UNLABELLED and remains one repository. Neither cohort should be silently pooled with the completed human-rated natural pilot.
 
@@ -121,7 +127,7 @@ No transition row, contract projection, source boundary, or semantic label is pr
 
 ## Citation and release
 
-A formal citation entry is provided in `CITATION.cff`. The complete journal-resubmission artefact is now on the default `main` branch. The manuscript and reviewer-response letters should cite one final `main` commit after the submission files are synchronized.
+A formal citation entry is provided in `CITATION.cff`. The reference code, controlled fixtures and historical verification artefacts are now on the default `main` branch; author-held N3/B expert returns and private study evidence are not automatically deposited. The manuscript and reviewer response should cite the exact tested `main` commit, acknowledging that private data permissions and author sign-off remain separate.
 
 No archival GitHub release/Zenodo DOI is claimed until the authors explicitly create one.
 
