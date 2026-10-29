@@ -1,6 +1,6 @@
-# DCTR-IA-2.0 — Reviewer 1 algorithmic follow-up (research branch)
+# DCTR-IA-2.0 — Reviewer 1 algorithmic follow-up (main-branch reference implementation)
 
-**Status (29 October 2026):** Proposed manuscript decision rule, implemented in a research-branch reference client. This PR is still draft/unmerged and is **not** a released/tagged v2.0 or a production MCP security detector. Historical DCTR-CB-1.0, the 34-path held-out study, 21-path natural pilot, comparator data and original author labels remain unchanged.
+**Status (29 October 2026; post-merge):** Proposed manuscript decision rule now implemented on the `main` branch through [merged PR #8](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/pull/8). The merge commit is `ce25966a67c92638c64bcdca780022bfd0fe8534`. Its [main-branch CI run #40960388584](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/40960388584) **passed**: 87 primary checks, 20 official SDK integration checks and upstream immutable-source audit. This is **not** a tagged v2.0 release or a validated production MCP security detector. Historical DCTR-CB-1.0, the 34-path held-out study, 21-path natural pilot, comparator data and original author labels remain unchanged.
 
 ## Why the change exists
 
@@ -10,7 +10,7 @@ For interaction-sensitive changes, the engine receives a separately sourced whol
 
 A supported material interaction may escalate to L3. L4 is reserved for an explicit R4 deception/evasion rationale, subject to the same canonical hash binding; neither a hash match nor a rationale string alone independently validates the expert's correctness. Single bounded changes retain normal L0–L2 treatment unless they involve relational/opaque schema edits. Existing confirmed path-level L4 is never downgraded.
 
-### Authoritative implementation path in this research branch
+### Authoritative implementation path on merged `main`
 
 - \`scripts/interaction_v2.py\`: prospective \`revalidate_v2\` entry point. It wraps the unmodified historical \`revalidation_state.revalidate\` for audit reproducibility.
 - \`scripts/round4_official_sdk_gateway.py\`: real official MCP SDK \`ClientSession\` stdio adapter using \`revalidate_v2\` at refresh and SQLite trust-state persistence before invocation. Prior to \`tools/call\`, it rechecks the live \`tools/list\` contract digest and the stored operational/human baselines.
@@ -28,7 +28,7 @@ Snapshot replay consumes actual version-pinned maintainer-generated Tool-definit
 
 ### Reproducibility
 
-Both CI jobs are triggered by pushing this branch (\`round3/**\`) under \`.github/workflows/reproducibility.yml\`:
+The reproducibility workflow runs on `main` and the `round3/**` research branch under `.github/workflows/reproducibility.yml`:
 
 \`\`\`sh
 python -m unittest discover -s tests -v                  # mcp==1.28.0 pinned
@@ -39,18 +39,18 @@ python scripts/verify_round3_natural_packets.py
 python scripts/verify_primary_evidence.py
 \`\`\`
 
-Use the latest successful run of this branch, not a previous main-branch CI count, when reporting technical results. Unit, SDK and snapshot replays are **not independent natural research observations**.
+Use the successful workflow on the **exact cited commit**, not a historical count, when reporting technical results. Unit, SDK and snapshot replays are **not independent natural research observations**.
 
 ## Four Round-4 reviewer comments: allowable claims
 
 1. **Two individually L2 changes:** the prospective policy now assesses joint contract effects and conservatively prevents automatic continuation if unresolved; real SDK tests exercise this enforcement.
 2. **Guard scope and multiple scenarios:** whole assessment is a versioned policy entry point rather than the prior one-off literal-path guard; several positive/negative/cumulative controlled cases and source-derived snapshots exercise it. This still does **not** establish sensitivity/specificity or natural interaction detection accuracy.
-3. **Independent natural L3/L4 evidence:** separately collected N3 frozen expert A/B workbooks now support 37/48 pre-adjudication exact agreement (linear-weighted κ=0.710, 47 ordinal pairs), including 16 jointly L3-rated paths across 11 selected clusters/five repositories (8 repositories total); 11 disagreements remain unadjudicated and no natural L4 was observed. These N3 workbooks and selected contract packets are author-held, **not a part of this PR/CI**. Separately, the author-held Study B ten-case boundary study reports 10/10 L3/L4 agreement for six author-adapted, source-attributed R4 stimuli and four natural disclosed R3 controls. Its separate supplied SDK fixture log reports 6/6 R4 quarantine and 4/4 R3 pending with a predeclared classifier; it is not independently verified by this PR's green workflow. The historical 43-path Stage3N corpus, here called Study N2, is structural evidence only and must not be assigned unverified expert labels.
+3. **Independent natural L3/L4 evidence:** separately collected N3 frozen expert A/B workbooks now support 37/48 pre-adjudication exact agreement (linear-weighted κ=0.710, 47 ordinal pairs), including 16 jointly L3-rated paths across 11 selected clusters/five repositories (8 repositories total); 11 disagreements remain unadjudicated and no natural L4 was observed. These N3 workbooks and selected contract packets are author-held, **not independently validated by repository engineering CI**. Separately, the author-held Study B ten-case boundary study reports 10/10 L3/L4 agreement for six author-adapted, source-attributed R4 stimuli and four natural disclosed R3 controls. Its separate supplied SDK fixture log reports 6/6 R4 quarantine and 4/4 R3 pending with a predeclared classifier; it is not independently verified by merged main CI. The historical 43-path Stage3N corpus, here called Study N2, is structural evidence only and must not be assigned unverified expert labels.
 4. **ETDI and Microsoft comparisons:** keep Table 7 explicitly scoped to **policy-design/decision-structure differences**. Synthetic fixture outcomes may be shown separately as measured local gate behavior, never as real-world security benefit, fewer false positives, or better detection than independently implemented production comparators.
 
 ## Remaining work before revised MDPI submission
 
-N3 pre-adjudication labels/selected contracts have been verified off-repository; do not relabel the 11 unresolved disagreements as adjudicated. Earlier N2 human ratings and the separately described 16-contract S1 synthetic human study are **excluded** from the revised paper's verified quantitative results. Confirm ethics/coauthor declarations and public-data permissions, synchronize with the exact last journal-submitted manuscript, perform code review and verify a final tagged-main CI run before calling this a released v2.0. Review acceptance cannot be guaranteed.
+N3 pre-adjudication labels/selected contracts have been verified off-repository; do not relabel the 11 unresolved disagreements as adjudicated. Earlier N2 human ratings and the separately described 16-contract S1 synthetic human study are **excluded** from the revised paper's verified quantitative results. Confirm ethics/coauthor declarations and public-data permissions, synchronize with the exact last journal-submitted manuscript, verify author sign-off and a separately issued release tag/CI before calling this a tagged v2.0 release. Review acceptance cannot be guaranteed.
 
 **Security limits:** not a general automatic interaction-risk detector; no SDK v2, hostile remote transport, per-invocation server-enforced digest precondition, authenticated remediation service, multi-worker concurrency transaction, or security-harm ground truth. The \`tools/list\`→\`tools/call\` TOCTOU gap remains.
 
@@ -100,8 +100,15 @@ natural R4-positive observation is asserted.
 ## 29 October 2026: cross-paper consistency checkpoint (supersedes older pilot-only caveats)
 
 - **Current verified research-branch build:** [GitHub Actions run 40439092975](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/40439092975), head `a5a93a50b5e27f309e75af749d6f1e004681ee05`: **87 primary test executions, 20 official MCP SDK test executions** and a successful upstream-source audit. The earlier 84/19 build cited above is historical and must not be used as the current count.
-- **Main branch vs manuscript:** `main` retains the historical reference; `scripts/interaction_v2.py` implements the proposed DCTR-IA-2.0 decision rule here. The paper should say *proposed final decision rule, research-branch implementation* until a reviewed merge and tagged-release CI exist. `POLICY_VERSION = DCTR-IA-2.0-EXPERIMENTAL` is the code's current explicit identifier.
+- **Main branch vs manuscript (post-merge):** `main` retains the historical DCTR-CB-1.0 reference and now includes `scripts/interaction_v2.py` implementing DCTR-IA-2.0. Cite the exact successful `main` merge commit and its CI; do not claim a tagged v2.0 release or production-grade semantic classification.
 - **What the mechanism proves:** a rule-based trigger routes 2+ changed JSON-Pointer paths or coupled-schema changes in either local or cumulative delta to digest-bound assessment; if unresolved it blocks automatic continuation. **This does not identify whether the combination is semantically harmful.** All controlled ratings and local marker events are test/operator-defined.
 - **N2 source-snapshot replay:** 20 natural transitions, 43 changed paths, 14 maintainer clusters; exactly 14 transitions have 2+ changed paths and are routed. The six single-path transitions are not routed under the supplied data. This is structural trigger coverage, not an independently measured natural positive/negative classification or review-necessity rate. Legacy N2 case IDs use the prefix `N3-` and must not be confused with the different cross-repository **Study N3**.
 - **Study B evidence provenance:** four complete natural R3 before/after contracts are distinct from the simplified common-baseline R3 SDK fixtures. Six R4 description stimuli are author-written adaptations attributed to published mechanism categories, not source-exact published payloads. The local SDK outcome log is an author-generated separate result, not included in the 87+20 workflow run.
-- **Current unresolved external requirements:** original ethics/consent permission confirmation; permitted public deposit of author-held N3/B source data; publication/tag/CI approval; exact model/version disclosures. Do not publish private annotator workbooks or consent records through this PR.
+- **Current unresolved external requirements:** original ethics/consent permission confirmation; permitted public deposit of author-held N3/B source data; release-tag approval; exact model/version disclosures. Do not publish private annotator workbooks or consent records through this PR.
+
+## Merge and main-branch CI verification (29 October 2026)
+
+- **Merged PR:** [#8](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/pull/8), merge commit `ce25966a67c92638c64bcdca780022bfd0fe8534` (historical DCTR-CB-1.0 preserved; proposed V2 code now present on `main`).
+- **Successful main-branch CI:** [run #40960388584](https://github.com/IjlalShah5/dctr-mcp-tool-revalidation/actions/runs/40960388584), completed with **87/87 primary test executions, 20/20 official MCP SDK test executions and a successful upstream source audit** on exactly that merge commit. No test outcome was manually overridden.
+- This documentation-only follow-up commit has its own head commit and requires its **own** successful CI before citing it as fully checked.
+- No `v2.0` tag, published release, real-world security effectiveness, or MDPI upload is asserted here. Engineering tests are not independent research observations.
